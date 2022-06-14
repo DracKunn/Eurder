@@ -15,6 +15,8 @@ To **properly** implement all the stories, in a **test-first way** with a **prop
 an experienced developer will need around 2-3 days, it might be more, it might be less. Therefore, we've created two categories 
 of stories: **Must-Have's** and **Nice-To-Have's**. Start with the Must-Have's, then do the Nice-To-Have's.
 
+Kanban: https://trello.com/b/cJ1RAttB/eurder-brecht
+
 **Must-Have stories:**
 - Story 0 (your project setup + other technical requirements)
 - Story 1
