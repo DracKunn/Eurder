@@ -17,7 +17,7 @@ public abstract class User {
 
 
     protected static String validateEmail(String email) throws IllegalArgumentException {
-        if (email == null) {
+        if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email cannot be empty");
         }
         Pattern pattern = Pattern.compile(OWASP_EMAIL_VALIDATION);
