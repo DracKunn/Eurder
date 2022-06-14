@@ -11,6 +11,8 @@ public abstract class User {
     protected final String email;
 
     protected User(Name name, String email) {
+        validateNameField(name.firstName());
+        validateNameField(name.lastName());
         this.name = name;
         this.email = validateEmail(email);
     }
@@ -26,6 +28,13 @@ public abstract class User {
             throw new IllegalArgumentException("invalid e-mail format");
         }
         return email;
+    }
+
+    private String validateNameField(String name) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("name cannot be empty!");
+        }
+        return name;
     }
 
     public Name getName() {
