@@ -14,7 +14,7 @@ class CustomerTest {
         //given
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
-        Address address = new Address();
+        Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
         Customer customer = new Customer(name,email, address, phoneNumber);
         //When
@@ -30,7 +30,7 @@ class CustomerTest {
         //given
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenorbardcollegeorg";
-        Address address = new Address();
+        Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
 
         //When
@@ -45,7 +45,7 @@ class CustomerTest {
         //given
         Name name = new Name("Bruenor", "The Bard");
         String email = null;
-        Address address = new Address();
+        Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
 
         //When
