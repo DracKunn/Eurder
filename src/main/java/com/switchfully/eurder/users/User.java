@@ -11,17 +11,15 @@ public abstract class User {
     protected final String email;
 
     protected User(Name name, String email) {
-        validateNameField(name.firstName());
-        validateNameField(name.lastName());
+        isNotNullOrEmpty(name.firstName(),"first name");
+        isNotNullOrEmpty(name.lastName(), "last name");
         this.name = name;
         this.email = validateEmail(email);
     }
 
 
     protected static String validateEmail(String email) throws IllegalArgumentException {
-        if (email == null || email.isBlank()) {
-            throw new IllegalArgumentException("Email cannot be empty");
-        }
+        isNotNullOrEmpty(email, "email");
         Pattern pattern = Pattern.compile(OWASP_EMAIL_VALIDATION);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
@@ -30,12 +28,12 @@ public abstract class User {
         return email;
     }
 
-    private String validateNameField(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("name cannot be empty!");
+    private static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
+        if (stringToValidate == null || stringToValidate.isBlank()) {
+            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }
-        return name;
     }
+
 
     public Name getName() {
         return name;
