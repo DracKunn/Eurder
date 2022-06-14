@@ -8,7 +8,7 @@ public class Customer extends User {
     private final Address address;
     private final String phoneNumber;
 
-    public Customer(Name name, String email,Address address, String phoneNumber) {
+    public Customer(Name name, String email, Address address, String phoneNumber) {
         super(name, email);
         this.address = address;
         this.phoneNumber = phoneNumber;
@@ -20,5 +20,10 @@ public class Customer extends User {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer " + name + ", " + email;
     }
 }
