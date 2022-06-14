@@ -5,6 +5,8 @@ import com.switchfully.eurder.users.Name;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,34 +42,19 @@ class CustomerTest {
         assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
     }
 
-    @Test
-    @DisplayName("given a customer with a null email adress when creating the customer then throws an exception")
-    void givenACustomerWithANullEmailAddressWhenCreatingTheCustomerThenThrowsAnException() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("given a null or blank email address when creating a customer then throws an exception")
+    void givenANullOrBlankEmailAddress_whenCreatingACustomer_thenThrowsAnException(String testEmail) {
+
         //given
         Name name = new Name("Bruenor", "The Bard");
-        String email = null;
-        Address address = new Address("streetName", 666, "postalCode", "city");
-        String phoneNumber = "+32444555666";
-
-        //When
-
-        //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
-    }
-
-    @Test
-    @DisplayName("given a customer with an empty email address when creating the customer then throws an exception")
-    void givenACustomerWithAnEmptyEmailAddressWhenCreatingTheCustomerThenThrowsAnException() {
-        //given
-        Name name = new Name("Bruenor", "The Bard");
-        String email = "";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(name, testEmail, address, phoneNumber));
     }
-
 
 
 }
