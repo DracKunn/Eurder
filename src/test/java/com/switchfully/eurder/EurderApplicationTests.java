@@ -6,9 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class EurderApplicationTests {
 
-	@Test
-	void contextLoads() {
-		//not implemented yet
-	}
+
 
 }
