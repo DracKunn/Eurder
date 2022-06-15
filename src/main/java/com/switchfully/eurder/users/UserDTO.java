@@ -1,6 +1,6 @@
 package com.switchfully.eurder.users;
 
-public class UserDTO {
+public abstract class UserDTO {
 
     protected final Name name;
     protected final String email;

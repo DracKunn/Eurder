@@ -11,9 +11,7 @@ public abstract class User {
     protected final String email;
 
     protected User(Name name, String email) {
-        isNotNullOrEmpty(name.firstName(),"first name");
-        isNotNullOrEmpty(name.lastName(), "last name");
-        this.name = name;
+        this.name = validateName(name);
         this.email = validateEmail(email);
     }
 
@@ -28,11 +26,18 @@ public abstract class User {
         return email;
     }
 
-    private static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
+    protected static Name validateName(Name name) throws IllegalArgumentException {
+        isNotNullOrEmpty(name.firstName(), "first name");
+        isNotNullOrEmpty(name.lastName(), "last name");
+        return name;
+    }
+
+    protected static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
         if (stringToValidate == null || stringToValidate.isBlank()) {
             throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }
     }
+
 
 
     public Name getName() {
