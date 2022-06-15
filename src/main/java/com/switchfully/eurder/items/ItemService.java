@@ -21,17 +21,11 @@ public class ItemService {
     public void removeItemgroupAmountFromStock(ItemGroup itemGroup) {
         Item item = itemRepository.getItemByName(itemGroup.getSelectedItem().name());
         int amount = itemGroup.getAmount();
-        itemRepository.getItemByName(item.getName()).setStock(removeAmountFormStock(item, amount));
+        item.removeAmountFormStock(amount);
 
     }
 
-    private int removeAmountFormStock(Item item, int amount) {
 
-        if (item.getStock() < amount) {
-            return 0;
-        }
-        return item.getStock() - amount;
-    }
 
     public Item ItemDTOToItem(ItemDTO itemDTO) {
         return itemMapper.itemDTOToItem(itemDTO);

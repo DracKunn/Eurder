@@ -103,19 +103,6 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("Test name")
-    void testName() {
-        
-        fail("Not implemented");
-        //given 
-
-        //when 
-
-        //then 
-
-    }
-
-    @Test
     @DisplayName("given an item, when i create a new order then the order exists and contains the item.")
     void givenAnItemWhenICreateANewOrderThenTheOrderExistsAndContainsTheItem() {
 
@@ -133,6 +120,29 @@ class OrderServiceTest {
 
         //then
         assertTrue(orderRepository.getOrderMap().containsValue(actual));
+    }
+
+
+    @Test
+    @DisplayName("given an item with a stock and a webshop, when we confirm an order more than the current stock the stock is zero")
+    void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() {
+
+ //given
+        Item headphones = new Item("Headphones", "portable sound listening electronic device");
+        headphones.setPrice(50.50).setStock(2);
+
+        OrderRepository orderRepository = new OrderRepository();
+
+        ItemMapper itemMapper = new ItemMapper();
+
+        OrderMapper orderMapper = new OrderMapper();
+        OrderService orderService = new OrderService(orderMapper, orderRepository,new ItemService(itemMapper,new ItemRepository()));
+        //when
+ //when
+        Order order = orderService.addItemsToNewOrder("Buying one pair of Headphones",itemMapper.itemToItemDTO(headphones),3);
+        orderService.confirmOrder(orderMapper.orderToOrderDTO(order));
+ //then
+   assertEquals(0,headphones.getStock());
     }
 
 

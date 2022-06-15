@@ -22,14 +22,15 @@ public class OrderService {
         this.itemService = itemService;
     }
 
+    public void confirmOrder(OrderDTO orderDTO) {
+        Order order = orderMapper.orderDTOToOrder(orderDTO);
+        removeAmountFromStock(order);
+        logger.info("Order " + order.getOrderID() + " has been confirmed.");
+    }
+
     public void placeOrder(OrderDTO orderDTO) {
         Order order = orderMapper.orderDTOToOrder(orderDTO);
         orderRepository.placeOrder(order);
-
-        // we want to remove the amount that is ordered from the stock of the item. for that we need to get the order, then the map of the ordered items containing a map of ordergroups which will lead to the item...
-
-        removeAmountFromStock(order);
-
         logger.info("Order " + order.getOrderID() + " has been placed.");
     }
 

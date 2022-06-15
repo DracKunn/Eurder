@@ -51,7 +51,13 @@ public class Item {
             throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }
     }
+    public void removeAmountFormStock(int amount) {
 
+        if (stock < amount) {
+            this.setStock(0);
+        }
+        this.setStock(stock - amount);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
