@@ -7,13 +7,13 @@ public class Item {
     private final String name;
     private final String description;
     private double price;
-    private int amount;
+    private int stock;
 
     public Item(String name, String description) {
         this.name = name;
         this.description = description;
         this.price = ZERO;
-        this.amount = ZERO;
+        this.stock = ZERO;
 
     }
 
@@ -35,12 +35,12 @@ public class Item {
         return this;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getStock() {
+        return stock;
     }
 
-    public Item setAmount(int amount) {
-        this.amount = amount;
+    public Item setStock(int amount) {
+        this.stock = amount;
         return this;
     }
 
@@ -50,11 +50,11 @@ public class Item {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Item item)) return false;
-        return Double.compare(item.getPrice(), getPrice()) == 0 && getAmount() == item.getAmount() && getName().equals(item.getName()) && getDescription().equals(item.getDescription());
+        return Double.compare(item.getPrice(), getPrice()) == 0 && getStock() == item.getStock() && getName().equals(item.getName()) && getDescription().equals(item.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getDescription(), getPrice(), getAmount());
+        return Objects.hash(getName(), getDescription(), getPrice(), getStock());
     }
 }

@@ -17,14 +17,14 @@ class ItemRepositoryTest {
         double price = 7.99;
         int amount = 120;
         Item item = new Item(name, description);
-        item.setAmount(120).setPrice(7.99);
+        item.setStock(120).setPrice(7.99);
 
         //when
         itemRepository.addItem(item);
         Item actual = itemRepository.getItemByName(name);
         //then
         Item expected = new Item("Socks", "Fuzzy fabric to keep your feet warm");
-        expected.setPrice( 7.99).setAmount(120);
+        expected.setPrice( 7.99).setStock(120);
         assertEquals(expected, actual);
 
     }
