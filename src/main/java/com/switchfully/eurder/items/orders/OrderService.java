@@ -36,6 +36,7 @@ public class OrderService {
     public Order addItemsToNewOrder(String orderId, ItemDTO itemDTO, int amount) {
         Order order = new Order(orderId);
         order.addItemToOrder(itemService.ItemDTOToItem(itemDTO), amount);
+        orderRepository.placeOrder(order);
         return order;
     }
 

@@ -27,14 +27,14 @@ class OrderServiceTest {
         ItemService webStock = new ItemService(itemMapper, warehouse);
         OrderRepository shoppingBasket = new OrderRepository();
         OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper,shoppingBasket , webStock);
+        OrderService orderService = new OrderService(orderMapper, shoppingBasket, webStock);
 
         //when
         Order order = orderService.addItemsToNewOrder("ID", headphonesDTO, amountOfHeadphonesToBuy);
         ;
         //then
         Order expected = shoppingBasket.getOrderwithID("ID");
-        assertEquals(expected,order);
+        assertEquals(expected, order);
     }
 
     @Test
@@ -61,12 +61,12 @@ class OrderServiceTest {
         ItemService webStock = new ItemService(itemMapper, warehouse);
         OrderRepository shoppingBasket = new OrderRepository();
         OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper,shoppingBasket , webStock);
+        OrderService orderService = new OrderService(orderMapper, shoppingBasket, webStock);
 
         Order orderDTO = orderService.addItemsToNewOrder("Shopping", headphonesDTO, amountOfHeadphonesToBuy);
 
         //when
-        Order secondOrderDTO = orderService.addItemsToExistingOrder("Shopping",sweatersDTO,20 );
+        Order secondOrderDTO = orderService.addItemsToExistingOrder("Shopping", sweatersDTO, 20);
 
         //then
         assertTrue(shoppingBasket.getOrderMap().containsValue(secondOrderDTO));
@@ -103,18 +103,37 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("given an item, when i create a new order then the order exists and contains the item.")
-    void givenAnItemWhenICreateANewOrderThenTheOrderExistsAndContainsTheItem() {
+    @DisplayName("Test name")
+    void testName() {
         
-        org.junit.jupiter.api.Assertions.fail("Not implemented"); 
- //given 
- 
- //when 
- 
- //then 
-   
+        fail("Not implemented");
+        //given 
+
+        //when 
+
+        //then 
+
     }
 
+    @Test
+    @DisplayName("given an item, when i create a new order then the order exists and contains the item.")
+    void givenAnItemWhenICreateANewOrderThenTheOrderExistsAndContainsTheItem() {
+
+        //given
+        Item headphones = new Item("Headphones", "portable sound listening electronic device");
+        headphones.setPrice(50.50).setStock(100);
+
+        OrderRepository orderRepository = new OrderRepository();
+
+        ItemMapper itemMapper = new ItemMapper();
+
+        OrderService orderService = new OrderService(new OrderMapper(), orderRepository,new ItemService(itemMapper,new ItemRepository()));
+        //when
+        Order actual = orderService.addItemsToNewOrder("Buying one pair of Headphones",itemMapper.itemToItemDTO(headphones),1);
+
+        //then
+        assertTrue(orderRepository.getOrderMap().containsValue(actual));
+    }
 
 
 }
