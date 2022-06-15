@@ -9,7 +9,7 @@ public class ItemGroup {
     private static final int WEEKS_TO_ADD = 1;
     private static final int DAYS_TO_ADD = 1;
     private final SelectedItem selectedItem;
-    private int amount;
+    private final int amount;
     private final LocalDate shippingDate;
     public ItemGroup(Item item, int amount) {
         this.selectedItem = new SelectedItem(item.getName(), item.getDescription(), item.getPrice(), item.getStock());
@@ -38,4 +38,7 @@ public class ItemGroup {
     public int getAmount() {
         return amount;
     }
+
+    // we want to remove the amount that is ordered from the stock of the item. for that we need to get the order, then the map of the ordered items containing a map of ordergroups which will lead to the item...
+
 }

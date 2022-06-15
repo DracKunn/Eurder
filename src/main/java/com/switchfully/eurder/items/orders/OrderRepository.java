@@ -7,13 +7,21 @@ import java.util.Map;
 
 @Repository
 public class OrderRepository {
-    private final Map<String, Order> itemMap;
+    private final Map<String, Order> orderMap;
 
     public OrderRepository() {
-        this.itemMap = new HashMap<>();
+        this.orderMap = new HashMap<>();
     }
 
     public void placeOrder(Order order) {
+        orderMap.put(order.getOrderID(), order);
+    }
 
+    public Order getOrderwithID(String id) {
+        return orderMap.get(id);
+    }
+
+    public Map<String, Order> getOrderMap() {
+        return orderMap;
     }
 }

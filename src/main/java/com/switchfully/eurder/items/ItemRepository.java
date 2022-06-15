@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @Repository
 public class ItemRepository {

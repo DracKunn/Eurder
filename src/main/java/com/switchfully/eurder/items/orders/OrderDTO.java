@@ -1,4 +1,6 @@
 package com.switchfully.eurder.items.orders;
 
-public class OrderDTO {
+import java.util.Map;
+
+public record OrderDTO(String orderID, Map<String, ItemGroup> orderedItems) {
 }

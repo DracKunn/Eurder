@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 @Service
 public class CustomerService {
-    private Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     CustomerMapper customerMapper;
     UserRepository userRepository;
@@ -20,5 +20,6 @@ public class CustomerService {
     public void registerNewCustomer(CustomerDTO newCustomerDTO) {
         Customer newCustomer = this.customerMapper.customerDTOToCustomer(newCustomerDTO);
         this.userRepository.addNewUser(newCustomer);
+        logger.info("A new customer has been created: " + newCustomer);
     }
 }
