@@ -30,11 +30,11 @@ class OrderServiceTest {
         OrderService orderService = new OrderService(orderMapper,shoppingBasket , webStock);
 
         //when
-        OrderDTO orderDTO = orderService.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
-        Order actual = orderMapper.orderDTOToOrder(orderDTO);
+        Order order = orderService.addItemsToNewOrder("ID", headphonesDTO, amountOfHeadphonesToBuy);
+        ;
         //then
-        Order expected = shoppingBasket.getOrderwithID("buying 5 headphones");
-        assertEquals(expected,actual);
+        Order expected = shoppingBasket.getOrderwithID("ID");
+        assertEquals(expected,order);
     }
 
     @Test
@@ -63,13 +63,13 @@ class OrderServiceTest {
         OrderMapper orderMapper = new OrderMapper();
         OrderService orderService = new OrderService(orderMapper,shoppingBasket , webStock);
 
-        OrderDTO orderDTO = orderService.addItemsToNewOrder("Shopping", headphonesDTO, amountOfHeadphonesToBuy);
+        Order orderDTO = orderService.addItemsToNewOrder("Shopping", headphonesDTO, amountOfHeadphonesToBuy);
 
         //when
-        OrderDTO secondOrderDTO = orderService.addItemsToExistingOrder("Shopping",sweatersDTO,20 );
-        Order actual = orderMapper.orderDTOToOrder(secondOrderDTO);
+        Order secondOrderDTO = orderService.addItemsToExistingOrder("Shopping",sweatersDTO,20 );
+
         //then
-        assertTrue(shoppingBasket.getOrderMap().containsValue(actual));
+        assertTrue(shoppingBasket.getOrderMap().containsValue(secondOrderDTO));
     }
 
     @Test
@@ -89,16 +89,30 @@ class OrderServiceTest {
         ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
 
         ItemService webStock = new ItemService(itemMapper, warehouse);
-        OrderService webshop = new OrderService(new OrderMapper(), new OrderRepository(), webStock);
+        OrderMapper orderMapper = new OrderMapper();
+        OrderService webshop = new OrderService(orderMapper, new OrderRepository(), webStock);
 
-        OrderDTO orderDTO = webshop.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
+        Order order = webshop.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
 
         //when
-        webshop.placeOrder(orderDTO);
+        webshop.placeOrder(orderMapper.orderToOrderDTO(order));
         //then
         int actual = headphones.getStock();
         int expected = headphonesStock - amountOfHeadphonesToBuy;
         assertEquals(expected, actual);
+    }
+
+    @Test
+    @DisplayName("given an item, when i create a new order then the order exists and contains the item.")
+    void givenAnItemWhenICreateANewOrderThenTheOrderExistsAndContainsTheItem() {
+        
+        org.junit.jupiter.api.Assertions.fail("Not implemented"); 
+ //given 
+ 
+ //when 
+ 
+ //then 
+   
     }
 
 

@@ -33,16 +33,16 @@ public class OrderService {
         logger.info("Order " + order.getOrderID() + " has been placed.");
     }
 
-    public OrderDTO addItemsToNewOrder(String orderId, ItemDTO itemDTO, int amount) {
+    public Order addItemsToNewOrder(String orderId, ItemDTO itemDTO, int amount) {
         Order order = new Order(orderId);
         order.addItemToOrder(itemService.ItemDTOToItem(itemDTO), amount);
-        return orderMapper.orderToOrderDTO(order);
+        return order;
     }
 
-    public OrderDTO addItemsToExistingOrder(String orderId, ItemDTO itemDTO, int amount) {
+    public Order addItemsToExistingOrder(String orderId, ItemDTO itemDTO, int amount) {
         Order order = orderRepository.getOrderwithID(orderId);
         order.addItemToOrder(itemService.ItemDTOToItem(itemDTO), amount);
-        return orderMapper.orderToOrderDTO(order);
+        return order;
     }
 
     private void removeAmountFromStock(Order order) {
