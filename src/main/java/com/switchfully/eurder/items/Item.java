@@ -10,6 +10,8 @@ public class Item {
     private int stock;
 
     public Item(String name, String description) {
+        isNotNullOrEmpty(name, "item name");
+        isNotNullOrEmpty(description, "item description");
         this.name = name;
         this.description = description;
         this.price = ZERO;
@@ -44,7 +46,11 @@ public class Item {
         return this;
     }
 
-
+    public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
+        if (stringToValidate == null || stringToValidate.isBlank()) {
+            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

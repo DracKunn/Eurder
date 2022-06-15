@@ -32,7 +32,7 @@ public abstract class User {
         return name;
     }
 
-    protected static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
+    public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
         if (stringToValidate == null || stringToValidate.isBlank()) {
             throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }

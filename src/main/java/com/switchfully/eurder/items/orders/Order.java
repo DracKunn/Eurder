@@ -32,6 +32,7 @@ public class Order {
     }
 
     public void addItemToOrder(Item item, int amount){
+
         orderedItems.put(item.getName(),new ItemGroup(item,amount));
     }
 }
