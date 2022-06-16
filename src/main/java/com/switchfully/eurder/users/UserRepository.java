@@ -45,6 +45,8 @@ public class UserRepository {
         return userMap.get(email);
     }
 
+    public Customer getCustomerByEmail(String email){return customerMap.get(email);}
+
     public List<Customer> getAllCustomers() {
         return customerMap.values().stream().toList();
     }

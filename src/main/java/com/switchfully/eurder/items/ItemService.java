@@ -17,10 +17,11 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    public void addItem(ItemDTO itemDTO) {
+    public ItemDTO addItem(ItemDTO itemDTO) {
         Item item = getItemFromDTO(itemDTO);
         itemRepository.addItem(item);
         logger.info("The item " + item + " has been added.");
+        return itemDTO;
     }
 
     public void removeItemAmountFromStock(ItemGroup itemGroup) {
@@ -40,10 +41,13 @@ public class ItemService {
             item.setStock(stock - amount);
         }
     }
-
-
     public Item getItemFromDTO(ItemDTO itemDTO) {
         return itemMapper.itemDTOToItem(itemDTO);
+    }
+
+    public ItemDTO getItemDTOFromItemName(String itemName){
+        Item item = itemRepository.getItemByName(itemName);
+        return itemMapper.itemToItemDTO(item);
     }
 
 }

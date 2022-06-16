@@ -22,10 +22,11 @@ public class OrderService {
         this.itemService = itemService;
     }
 
-    public void confirmOrder(OrderDTO orderDTO) {
+    public OrderDTO confirmOrder(OrderDTO orderDTO) {
         Order order = orderMapper.orderDTOToOrder(orderDTO);
         removeAmountFromStock(order);
         logger.info("Order " + order.getOrderID() + " has been confirmed.");
+        return orderDTO;
     }
 
 

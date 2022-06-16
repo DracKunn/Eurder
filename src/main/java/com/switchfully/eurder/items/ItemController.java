@@ -1,21 +1,27 @@
 package com.switchfully.eurder.items;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("customer")
+@RequestMapping("items")
 public class ItemController {
+    private final java.util.logging.Logger logger = Logger.getLogger(this.getClass().getName());
+
     ItemService itemService;
 
     public ItemController(ItemService itemService){this.itemService = itemService;}
 
 
 
-    @PostMapping(consumes = "application/json")
-    public ItemDTO addItem(ItemDTO itemDTO){
-        itemService.addItem(itemDTO);
-        return itemDTO;
+    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ItemDTO addItem(@RequestBody ItemDTO itemDTO){
+        logger.info("Added item " + itemDTO + ".");
+        return this.itemService.addItem(itemDTO);
     }
+
+
 }

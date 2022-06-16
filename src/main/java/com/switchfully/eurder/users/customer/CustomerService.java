@@ -19,10 +19,11 @@ public class CustomerService {
         this.userRepository = userRepository;
     }
 
-    public void registerNewCustomer(CustomerDTO newCustomerDTO) {
+    public CustomerDTO registerNewCustomer(CustomerDTO newCustomerDTO) {
         Customer newCustomer = this.customerMapper.customerDTOToCustomer(newCustomerDTO);
         this.userRepository.addNewCustomer(newCustomer);
         logger.info("A new customer has been created: " + newCustomer);
+        return newCustomerDTO;
     }
 
     private List<Customer> getAllCustomers() {
@@ -36,5 +37,10 @@ public class CustomerService {
             customerDTOS.add(customerMapper.customerToCustomerDTO(customer));
         }
         return customerDTOS;
+    }
+
+    public CustomerDTO getCustomerByEmail(String email) {
+        Customer customer = this.userRepository.getCustomerByEmail(email);
+        return this.customerMapper.customerToCustomerDTO(customer);
     }
 }

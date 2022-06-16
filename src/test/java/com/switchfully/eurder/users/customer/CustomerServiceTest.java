@@ -36,8 +36,39 @@ class CustomerServiceTest {
         List<CustomerDTO> actual = customerService.viewAllCustomers();
 
         //then
-        List<CustomerDTO> expected = List.of(sarahDTO,waldoDTO,henryDTO);
-        assertEquals(expected,actual);
+        List<CustomerDTO> expected = List.of(sarahDTO, waldoDTO, henryDTO);
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    @DisplayName("given a couple of customers, when asking a specific customer by email, then get that customer")
+    void givenACoupleOfCustomersWhenAskingASpecificCustomerByEmail_thenGetThatCustomer() {
+
+        //given
+        String waldoEmail = "where.waldo@bing.com";
+        Address address = new Address("Volderstraat", 12, "9000", "Gent");
+        Customer sarah = new Customer(new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
+        Customer waldo = new Customer(new Name("Waldo", "Where"), waldoEmail, address, "+3492583674");
+        Customer henry = new Customer(new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
+
+        UserRepository userRepository = new UserRepository();
+        CustomerMapper customerMapper = new CustomerMapper();
+        CustomerService customerService = new CustomerService(customerMapper, userRepository);
+
+        CustomerDTO sarahDTO = customerMapper.customerToCustomerDTO(sarah);
+        CustomerDTO waldoDTO = customerMapper.customerToCustomerDTO(waldo);
+        CustomerDTO henryDTO = customerMapper.customerToCustomerDTO(henry);
+        customerService.registerNewCustomer(sarahDTO);
+        customerService.registerNewCustomer(waldoDTO);
+        customerService.registerNewCustomer(henryDTO);
+
+        //when
+        CustomerDTO actual = customerService.getCustomerByEmail(waldoEmail);
+
+        //then
+
+        assertEquals(waldoDTO, actual);
 
     }
 
