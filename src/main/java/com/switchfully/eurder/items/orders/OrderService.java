@@ -28,22 +28,19 @@ public class OrderService {
         logger.info("Order " + order.getOrderID() + " has been confirmed.");
     }
 
-    public void placeOrder(OrderDTO orderDTO) {
-        Order order = orderMapper.orderDTOToOrder(orderDTO);
-        orderRepository.placeOrder(order);
-        logger.info("Order " + order.getOrderID() + " has been placed.");
-    }
 
     public Order addItemsToNewOrder(String orderId, ItemDTO itemDTO, int amount) {
         Order order = new Order(orderId);
-        order.addItemToOrder(itemService.ItemDTOToItem(itemDTO), amount);
+        order.addItemToOrder(itemService.getItemFromDTO(itemDTO), amount);
         orderRepository.placeOrder(order);
+        logger.info("A new order with ID: "+orderId+" has been created. "+amount+" "+itemDTO.name()+" have been added." );
         return order;
     }
 
     public Order addItemsToExistingOrder(String orderId, ItemDTO itemDTO, int amount) {
         Order order = orderRepository.getOrderwithID(orderId);
-        order.addItemToOrder(itemService.ItemDTOToItem(itemDTO), amount);
+        order.addItemToOrder(itemService.getItemFromDTO(itemDTO), amount);
+        logger.info(amount+" "+itemDTO.name()+" have been added to your order with ID: "+orderId+"." );
         return order;
     }
 

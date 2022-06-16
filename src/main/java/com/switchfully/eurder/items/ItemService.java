@@ -18,7 +18,7 @@ public class ItemService {
     }
 
     public void addItem(ItemDTO itemDTO) {
-        Item item = itemMapper.itemDTOToItem(itemDTO);
+        Item item = getItemFromDTO(itemDTO);
         itemRepository.addItem(item);
         logger.info("The item " + item + " has been added.");
     }
@@ -31,7 +31,7 @@ public class ItemService {
 
     }
 
-    public void removeAmountFormStock(Item item, int amount) {
+    private void removeAmountFormStock(Item item, int amount) {
         String itemName = item.getName();
         int stock = itemRepository.getItemByName(itemName).getStock();
         if (stock < amount) {
@@ -42,7 +42,7 @@ public class ItemService {
     }
 
 
-    public Item ItemDTOToItem(ItemDTO itemDTO) {
+    public Item getItemFromDTO(ItemDTO itemDTO) {
         return itemMapper.itemDTOToItem(itemDTO);
     }
 

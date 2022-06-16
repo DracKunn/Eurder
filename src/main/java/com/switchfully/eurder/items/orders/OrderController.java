@@ -12,8 +12,8 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    public OrderDTO placeOrder(OrderDTO orderDTO){
-        orderService.placeOrder(orderDTO);
+    public OrderDTO confirmOrder(OrderDTO orderDTO){
+        orderService.confirmOrder(orderDTO);
         return orderDTO;
     }
 }
