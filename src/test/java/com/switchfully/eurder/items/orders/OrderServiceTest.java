@@ -31,7 +31,7 @@ class OrderServiceTest {
 
         //when
         Order order = orderService.addItemsToNewOrder("ID", headphonesDTO, amountOfHeadphonesToBuy);
-        ;
+
         //then
         Order expected = shoppingBasket.getOrderwithID("ID");
         assertEquals(expected, order);
@@ -83,21 +83,26 @@ class OrderServiceTest {
         headphones.setPrice(50.50).setStock(headphonesStock);
 
         ItemRepository warehouse = new ItemRepository();
-        warehouse.addItem(headphones);
-
         ItemMapper itemMapper = new ItemMapper();
         ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-
         ItemService webStock = new ItemService(itemMapper, warehouse);
-        OrderMapper orderMapper = new OrderMapper();
-        OrderService webshop = new OrderService(orderMapper, new OrderRepository(), webStock);
 
-        Order order = webshop.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
+        webStock.addItem(headphonesDTO);
+
+        OrderRepository orderRepository = new OrderRepository();
+        OrderMapper orderMapper = new OrderMapper();
+        OrderService webShop = new OrderService(orderMapper, orderRepository, webStock);
+
+        Order order = webShop.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
+        OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
+
 
         //when
-        webshop.placeOrder(orderMapper.orderToOrderDTO(order));
+
+        webShop.confirmOrder(orderDTO);
         //then
-        int actual = headphones.getStock();
+        String itemName = headphones.getName();
+        int actual = warehouse.getItemByName(itemName).getStock();
         int expected = headphonesStock - amountOfHeadphonesToBuy;
         assertEquals(expected, actual);
     }
@@ -114,9 +119,9 @@ class OrderServiceTest {
 
         ItemMapper itemMapper = new ItemMapper();
 
-        OrderService orderService = new OrderService(new OrderMapper(), orderRepository,new ItemService(itemMapper,new ItemRepository()));
+        OrderService orderService = new OrderService(new OrderMapper(), orderRepository, new ItemService(itemMapper, new ItemRepository()));
         //when
-        Order actual = orderService.addItemsToNewOrder("Buying one pair of Headphones",itemMapper.itemToItemDTO(headphones),1);
+        Order actual = orderService.addItemsToNewOrder("Buying one pair of Headphones", itemMapper.itemToItemDTO(headphones), 1);
 
         //then
         assertTrue(orderRepository.getOrderMap().containsValue(actual));
@@ -127,22 +132,31 @@ class OrderServiceTest {
     @DisplayName("given an item with a stock and a webshop, when we confirm an order more than the current stock the stock is zero")
     void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() {
 
- //given
+        //given
         Item headphones = new Item("Headphones", "portable sound listening electronic device");
         headphones.setPrice(50.50).setStock(2);
 
-        OrderRepository orderRepository = new OrderRepository();
-
+        ItemRepository itemRepository = new ItemRepository();
         ItemMapper itemMapper = new ItemMapper();
+        ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
+        ItemService itemService = new ItemService(itemMapper, itemRepository);
 
+        itemService.addItem(headphonesDTO);
+
+        OrderRepository orderRepository = new OrderRepository();
         OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper, orderRepository,new ItemService(itemMapper,new ItemRepository()));
+        OrderService orderService = new OrderService(orderMapper, orderRepository, itemService);
+
         //when
- //when
-        Order order = orderService.addItemsToNewOrder("Buying one pair of Headphones",itemMapper.itemToItemDTO(headphones),3);
-        orderService.confirmOrder(orderMapper.orderToOrderDTO(order));
- //then
-   assertEquals(0,headphones.getStock());
+        Order order = orderService.addItemsToNewOrder("Buying 3 pairs of Headphones", headphonesDTO, 3);
+        OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
+
+        orderService.confirmOrder(orderDTO);
+        String itemName = headphones.getName();
+        int actual = itemRepository.getItemByName(itemName).getStock();
+        //then
+
+        assertEquals(0, actual);
     }
 
 

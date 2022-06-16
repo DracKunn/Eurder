@@ -48,7 +48,7 @@ public class OrderService {
     }
 
     private void removeAmountFromStock(Order order) {
-        order.getOrderedItems().values().forEach(itemGroup -> itemService.removeItemgroupAmountFromStock(itemGroup));
+        order.getOrderedItems().values().forEach(itemGroup -> itemService.removeItemAmountFromStock(itemGroup));
 
     }
 }

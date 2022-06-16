@@ -39,6 +39,5 @@ public class ItemGroup {
         return amount;
     }
 
-    // we want to remove the amount that is ordered from the stock of the item. for that we need to get the order, then the map of the ordered items containing a map of ordergroups which will lead to the item...
 
 }
