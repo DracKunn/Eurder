@@ -4,6 +4,8 @@ import com.switchfully.eurder.users.Address;
 import com.switchfully.eurder.users.Name;
 import com.switchfully.eurder.users.UserDTO;
 
+import java.util.Objects;
+
 public class CustomerDTO extends UserDTO {
 
     private final Address address;
@@ -21,5 +23,17 @@ public class CustomerDTO extends UserDTO {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerDTO that)) return false;
+        return getAddress().equals(that.getAddress()) && getPhoneNumber().equals(that.getPhoneNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAddress(), getPhoneNumber());
     }
 }

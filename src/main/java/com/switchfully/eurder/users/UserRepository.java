@@ -14,21 +14,29 @@ import java.util.logging.Logger;
 public class UserRepository {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private Map<String, User> userMap;
-    private Map<String,Customer> customerMap;
+    private Map<String, Customer> customerMap;
 
-    public UserRepository(){this.userMap = createAndInitializeMemberMap();}
+    public UserRepository() {
+        this.userMap = createAndInitializeUserMap();
+        this.customerMap = createCustomerMap();
+    }
 
-    private Map<String, User> createAndInitializeMemberMap() {
-        User admin = new Admin(new Name("Brecht", "Van Rie"),"brecht.vanrie@gmail.com");
+    private Map<String, User> createAndInitializeUserMap() {
+        User admin = new Admin(new Name("Brecht", "Van Rie"), "brecht.vanrie@gmail.com");
         userMap = new HashMap<>();
-        userMap.put(admin.email,admin);
+        userMap.put(admin.email, admin);
         return userMap;
+    }
+
+    private Map<String, Customer> createCustomerMap() {
+        customerMap = new HashMap<>();
+        return customerMap;
     }
 
     public Customer addNewCustomer(Customer customer) {
         userMap.put(customer.email, customer);
-        customerMap.put(customer.email,customer);
-        logger.info("User "+customer+" has been added.");
+        customerMap.put(customer.email, customer);
+        logger.info("User " + customer + " has been added.");
         return customer;
     }
 

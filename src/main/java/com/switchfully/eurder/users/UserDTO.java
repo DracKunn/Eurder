@@ -1,5 +1,7 @@
 package com.switchfully.eurder.users;
 
+import java.util.Objects;
+
 public abstract class UserDTO {
 
     protected final Name name;
@@ -16,5 +18,17 @@ public abstract class UserDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDTO userDTO)) return false;
+        return getName().equals(userDTO.getName()) && getEmail().equals(userDTO.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getEmail());
     }
 }

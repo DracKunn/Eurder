@@ -4,6 +4,7 @@ import com.switchfully.eurder.users.Address;
 import com.switchfully.eurder.users.Name;
 import com.switchfully.eurder.users.User;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,5 +53,16 @@ public class Customer extends User {
         return "Customer " + name + ", " + email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Customer customer)) return false;
+        if (!super.equals(o)) return false;
+        return getAddress().equals(customer.getAddress()) && getPhoneNumber().equals(customer.getPhoneNumber());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getAddress(), getPhoneNumber());
+    }
 }
