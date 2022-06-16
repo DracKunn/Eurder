@@ -5,6 +5,7 @@ import com.switchfully.eurder.users.customer.Customer;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 public class UserRepository {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private Map<String, User> userMap;
+    private Map<String,Customer> customerMap;
 
     public UserRepository(){this.userMap = createAndInitializeMemberMap();}
 
@@ -23,8 +25,9 @@ public class UserRepository {
         return userMap;
     }
 
-    public Customer addNewUser(Customer customer) {
+    public Customer addNewCustomer(Customer customer) {
         userMap.put(customer.email, customer);
+        customerMap.put(customer.email,customer);
         logger.info("User "+customer+" has been added.");
         return customer;
     }
@@ -32,5 +35,9 @@ public class UserRepository {
 
     public User getUserByEmail(String email) {
         return userMap.get(email);
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerMap.values().stream().toList();
     }
 }

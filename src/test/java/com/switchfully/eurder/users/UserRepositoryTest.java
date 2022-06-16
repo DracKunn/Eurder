@@ -20,7 +20,7 @@ class UserRepositoryTest {
 
         UserRepository userRepository = new UserRepository();
         //when
-        Customer actual = userRepository.addNewUser(customer);
+        Customer actual = userRepository.addNewCustomer(customer);
         //then
         Customer expected = (Customer) userRepository.getUserByEmail("bruenor@bardcollege.org");
         assertEquals(expected,actual);

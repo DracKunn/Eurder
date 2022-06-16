@@ -1,9 +1,8 @@
 package com.switchfully.eurder.users.customer;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("customer")
@@ -18,6 +17,11 @@ public class CustomerController {
     public CustomerDTO registerNewCustomer(@RequestBody CustomerDTO customerDTO){
         this.customerService.registerNewCustomer(customerDTO);
         return customerDTO;
+    }
+
+    @GetMapping()
+    public List<CustomerDTO> viewAllCustomers(){
+        return this.customerService.viewAllCustomers();
     }
 
 }
