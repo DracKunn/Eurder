@@ -9,17 +9,17 @@ public class ItemGroup {
     private static final int WEEKS_TO_ADD = 1;
     private static final int DAYS_TO_ADD = 1;
     private final SelectedItem selectedItem;
-    private final int amount;
-    private final LocalDate shippingDate;
+    private int amount;
+    private LocalDate shippingDate;
     public ItemGroup(Item item, int amount) {
         this.selectedItem = new SelectedItem(item.getName(), item.getDescription(), item.getPrice(), item.getStock());
         this.amount = amount;
-        this.shippingDate = calculateShippingDate(item,amount);
+        this.shippingDate = calculateShippingDate(amount);
 
     }
 
-    private LocalDate calculateShippingDate(Item item, int amount) {
-        int stock = item.getStock();
+    private LocalDate calculateShippingDate(int amount) {
+        int stock = selectedItem.stock();
         if (stock < amount){
             return LocalDate.now().plusWeeks(WEEKS_TO_ADD);
         }
@@ -39,5 +39,12 @@ public class ItemGroup {
         return amount;
     }
 
+    public void updateAmount(int amountToAdd) {
+        this.amount = this.amount + amountToAdd;
+        recalculateShippingDate(amount);
+    }
 
+    public void recalculateShippingDate(int amount){
+        this.shippingDate = calculateShippingDate(amount);
+    }
 }

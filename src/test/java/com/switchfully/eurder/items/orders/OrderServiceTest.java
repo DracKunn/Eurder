@@ -5,6 +5,8 @@ import com.switchfully.eurder.orders.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
@@ -173,13 +175,84 @@ class OrderServiceTest {
         ItemMapper itemMapper = new ItemMapper();
         ItemDTO itemDTO = itemMapper.itemToItemDTO(headphones);
 
-        ItemService itemService = new ItemService(itemMapper,new ItemRepository());
+        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
         itemService.addItem(itemDTO);
 
-        OrderService orderService = new OrderService(new OrderMapper(),new OrderRepository(),itemService);
+        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
 
         //when / then
-        assertThrows(IllegalArgumentException.class, ()-> orderService.addItemsToNewOrder(orderId,itemDTO,5));
+        assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToNewOrder(orderId, itemDTO, 5));
+
+    }
+
+    @Test
+    @DisplayName("given an item and an order of that item, when I order more of the same item, the amount of the item order increases appropriately")
+    void givenAnItemAndAnOrderOfThatItemWhenIOrderMoreOfTheSameItemTheAmountOfTheItemOrderIncreasesAppropriately() {
+        //given
+        String itemName = "item";
+        Item item = new Item(itemName, "test item");
+        item.setPrice(0.1).setStock(100);
+        ItemMapper itemMapper = new ItemMapper();
+        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
+        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
+        itemService.addItem(itemDTO);
+
+        String orderId = "order";
+        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
+        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
+        //when
+        orderService.addItemsToExistingOrder(orderId, itemDTO, 5);
+        //then
+        assertEquals(10, order.getOrderedItems().get(itemName).getAmount());
+    }
+
+    @Test
+    @DisplayName("given an item and an order, when I order more of the same item and the stock is insufficient, then a new itemgroup is created with a later shipping date")
+    void givenAnItemAndAnOrderWhenIOrderMoreOfTheSameItemAndTheStockIsInsufficientThenANewItemgroupIsCreatedWithALaterShippingDate() {
+
+        //given
+        String itemName = "item";
+        Item item = new Item(itemName, "test item");
+        item.setPrice(0.1).setStock(100);
+        ItemMapper itemMapper = new ItemMapper();
+        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
+        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
+        itemService.addItem(itemDTO);
+
+        String orderId = "order";
+        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
+        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
+        //when
+        orderService.addItemsToExistingOrder(orderId, itemDTO, 100);
+
+        //then
+        assertEquals(LocalDate.now().plusWeeks(1), order.getOrderedItems().get(itemName).getShippingDate());
+
+    }
+
+    @Test
+    @DisplayName("given an item and an order that is more than the stock, when i order more of the same item, the amount ordered increases appropriately")
+    void givenAnItemAndAnOrderThatIsMoreThanTheStockWhenIOrderMoreOfTheSameItemTheAmountOrderedIncreasesAppropriately() {
+
+        fail("Not implemented");
+        //given
+
+        //when
+
+        //then
+
+    }
+
+    @Test
+    @DisplayName("given an order of an item, when I want to see that order then I can see the items in the order and the amount")
+    void givenAnOrderOfAnItemWhenIWantToSeeThatOrderThenICanSeeTheItemsInTheOrderAndTheAmount() {
+
+        org.junit.jupiter.api.Assertions.fail("Not implemented");
+        //given
+
+        //when
+
+        //then
 
     }
 
