@@ -1,5 +1,7 @@
 package com.switchfully.eurder.items;
 
+import com.switchfully.eurder.util.ValidatorsUtility;
+
 import java.util.Objects;
 
 public class Item {
@@ -10,8 +12,8 @@ public class Item {
     private int stock;
 
     public Item(String name, String description) {
-        isNotNullOrEmpty(name, "item name");
-        isNotNullOrEmpty(description, "item description");
+        ValidatorsUtility.isNotNullOrEmpty(name, "item name");
+        ValidatorsUtility.isNotNullOrEmpty(description, "item description");
         this.name = name;
         this.description = description;
         this.price = ZERO;
@@ -44,12 +46,6 @@ public class Item {
     public Item setStock(int amount) {
         this.stock = amount;
         return this;
-    }
-
-    public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
-        if (stringToValidate == null || stringToValidate.isBlank()) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
-        }
     }
 
     @Override

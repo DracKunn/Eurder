@@ -1,6 +1,8 @@
 package com.switchfully.eurder.users;
 
 
+import com.switchfully.eurder.util.ValidatorsUtility;
+
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,7 +20,7 @@ public abstract class User {
 
 
     protected static String validateEmail(String email) throws IllegalArgumentException {
-        isNotNullOrEmpty(email, "email");
+        ValidatorsUtility.isNotNullOrEmpty(email, "email");
         Pattern pattern = Pattern.compile(OWASP_EMAIL_VALIDATION);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
@@ -28,18 +30,10 @@ public abstract class User {
     }
 
     protected static Name validateName(Name name) throws IllegalArgumentException {
-        isNotNullOrEmpty(name.firstName(), "first name");
-        isNotNullOrEmpty(name.lastName(), "last name");
+        ValidatorsUtility.isNotNullOrEmpty(name.firstName(), "first name");
+        ValidatorsUtility.isNotNullOrEmpty(name.lastName(), "last name");
         return name;
     }
-
-    public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
-        if (stringToValidate == null || stringToValidate.isBlank()) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
-        }
-    }
-
-
 
     public Name getName() {
         return name;

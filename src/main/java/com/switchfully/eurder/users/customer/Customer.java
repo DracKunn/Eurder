@@ -3,6 +3,7 @@ package com.switchfully.eurder.users.customer;
 import com.switchfully.eurder.users.Address;
 import com.switchfully.eurder.users.Name;
 import com.switchfully.eurder.users.User;
+import com.switchfully.eurder.util.ValidatorsUtility;
 
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -32,7 +33,7 @@ public class Customer extends User {
     //  Phone-number has to be of one of the following formats: 2055550125, 202 555 0125, (202) 555-0125, +111 (202) 555-0125,
     //      636 856 789, +111 636 856 789, 636 85 67 89, +111 636 85 67 89
     private static String validatePhoneNumber(String phoneNumber) throws IllegalArgumentException {
-        isNotNullOrEmpty(phoneNumber,"phone number");
+        ValidatorsUtility.isNotNullOrEmpty(phoneNumber,"phone number");
         Pattern pattern = Pattern.compile(PHONE_VALIDATION);
         Matcher matcher = pattern.matcher(phoneNumber);
         if (!matcher.matches()) {
@@ -42,9 +43,9 @@ public class Customer extends User {
     }
 
     private static Address validateAddress(Address address) throws IllegalArgumentException {
-        isNotNullOrEmpty(address.streetName(), "street name");
-        isNotNullOrEmpty(address.postalCode(), "postal code");
-        isNotNullOrEmpty(address.city(), "city");
+        ValidatorsUtility.isNotNullOrEmpty(address.streetName(), "street name");
+        ValidatorsUtility.isNotNullOrEmpty(address.postalCode(), "postal code");
+        ValidatorsUtility.isNotNullOrEmpty(address.city(), "city");
         return address;
     }
 

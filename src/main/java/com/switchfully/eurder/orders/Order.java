@@ -1,6 +1,7 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
+import com.switchfully.eurder.util.ValidatorsUtility;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class Order {
     }
 
     private String validateOrderId(String orderId)throws IllegalArgumentException{
-        isNotNullOrEmpty(orderId,"order ID");
+        ValidatorsUtility.isNotNullOrEmpty(orderId,"order ID");
         Pattern pattern = Pattern.compile(OWASP_ORDERID_VALIDATION);
         Matcher matcher = pattern.matcher(orderId);
         if (!matcher.matches()) {
@@ -51,9 +52,4 @@ public class Order {
 
     }
 
-    public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) throws IllegalArgumentException{
-        if (stringToValidate == null || stringToValidate.isBlank()) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
-        }
-    }
 }
