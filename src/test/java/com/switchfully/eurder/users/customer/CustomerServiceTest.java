@@ -17,9 +17,9 @@ class CustomerServiceTest {
 
         //given
         Address address = new Address("Volderstraat", 12, "9000", "Gent");
-        Customer sarah = new Customer(new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
-        Customer waldo = new Customer(new Name("Waldo", "Where"), "where.waldo@bing.com", address, "+3492583674");
-        Customer henry = new Customer(new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
+        Customer sarah = new Customer("sarah",new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
+        Customer waldo = new Customer("waldo",new Name("Waldo", "Where"), "where.waldo@bing.com", address, "+3492583674");
+        Customer henry = new Customer("henry",new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
 
         UserRepository userRepository = new UserRepository();
         CustomerMapper customerMapper = new CustomerMapper();
@@ -48,9 +48,9 @@ class CustomerServiceTest {
         //given
         String waldoEmail = "where.waldo@bing.com";
         Address address = new Address("Volderstraat", 12, "9000", "Gent");
-        Customer sarah = new Customer(new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
-        Customer waldo = new Customer(new Name("Waldo", "Where"), waldoEmail, address, "+3492583674");
-        Customer henry = new Customer(new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
+        Customer sarah = new Customer("sarah",new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
+        Customer waldo = new Customer("waldo",new Name("Waldo", "Where"), waldoEmail, address, "+3492583674");
+        Customer henry = new Customer("henry",new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
 
         UserRepository userRepository = new UserRepository();
         CustomerMapper customerMapper = new CustomerMapper();

@@ -12,8 +12,8 @@ public class Customer extends User {
     private final Address address;
     private final String phoneNumber;
 
-    public Customer(Name name, String email, Address address, String phoneNumber) {
-        super(name, email);
+    public Customer(String useName,Name name, String email, Address address, String phoneNumber) {
+        super(useName,name, email);
         this.address = validateAddress(address);
         this.phoneNumber = validatePhoneNumber(phoneNumber);
     }

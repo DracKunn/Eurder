@@ -15,11 +15,12 @@ class CustomerTest {
     @DisplayName("given a user with an email adress when email is valid then return email")
     void givenAUserWithAnEmailAdress_whenEmailIsValid_thenReturnEmail() {
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
-        Customer customer = new Customer(name, email, address, phoneNumber);
+        Customer customer = new Customer(userName,name, email, address, phoneNumber);
         //When
         String actual = customer.getEmail();
         //then
@@ -31,6 +32,7 @@ class CustomerTest {
     @DisplayName("given a customer with a bad email format when creating the customer then throws an exception")
     void givenACustomerWithABadEmailFormatWhenCreatingTheCustomerThenThrowsAnException() {
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenorbardcollegeorg";
         Address address = new Address("streetName", 666, "postalCode", "city");
@@ -39,7 +41,7 @@ class CustomerTest {
         //When
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
     }
 
     @ParameterizedTest
@@ -48,23 +50,25 @@ class CustomerTest {
     void givenANullOrBlankEmailAddress_whenCreatingACustomer_thenThrowsAnException(String testEmail) {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, testEmail, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, testEmail, address, phoneNumber));
     }
 
     @Test
     @DisplayName("given a user when getName then return name ")
     void givenAUserWhenGetNameThenReturnName() {
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
-        Customer customer = new Customer(name, email, address, phoneNumber);
+        Customer customer = new Customer(userName,name, email, address, phoneNumber);
 
         //when
         String actual = customer.getName().toString();
@@ -90,13 +94,14 @@ class CustomerTest {
     @DisplayName("given a blank or null first name then throws illegal argument Exception")
     void givenABlankOrNullFirstNameThenThrowsIllegalArgumentException(String testName) {
         //given
+        String userName = "bruenor";
         String lastName = "The Bard";
         Name name = new Name(testName, lastName);
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
     }
 
     @ParameterizedTest
@@ -104,13 +109,14 @@ class CustomerTest {
     @DisplayName("given a blank or null last name then throws illegal argument Exception")
     void givenABlankOrNullLastNameThenThrowsIllegalArgumentException(String testName) {
         //given
+        String userName = "bruenor";
         String firstName = "Bruenor";
         Name name = new Name(firstName, testName);
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
     }
 
     @Test
@@ -118,11 +124,12 @@ class CustomerTest {
     void givenAUserWithACorrectPhoneNumberWhenCheckingNumberThenNoExceptionIsThrown() {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
-        Customer customer = new Customer(name, email, address, phoneNumber);
+        Customer customer = new Customer(userName,name, email, address, phoneNumber);
         //when
         String actual = customer.getPhoneNumber();
         //then
@@ -136,6 +143,7 @@ class CustomerTest {
     void givenAnIncompletePhoneNumberWhenCreatingCustomerThenThrowsIllegalArgumetnException() {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
@@ -143,7 +151,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
     }
 
     @ParameterizedTest
@@ -152,6 +160,7 @@ class CustomerTest {
     void givenABlankOrNullPhoneNumberWhenCreatingACustomerThenThrowsIllegalArgumentException(String badNumber) {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
@@ -159,7 +168,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, badNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, badNumber));
     }
 
     @Test
@@ -167,11 +176,12 @@ class CustomerTest {
     void givenACorrectAddressWhenCreatingCustomerThenNoExceptionIsThrown() {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
         String phoneNumber = "+32444555666";
-        Customer customer = new Customer(name, email, address, phoneNumber);
+        Customer customer = new Customer(userName,name, email, address, phoneNumber);
         //when
         String actual = customer.getAddress().toString();
 
@@ -186,6 +196,7 @@ class CustomerTest {
     void givenANullOrEmptyStreetNameWhenCreatingCustomerThrowsIllegalArgumentException(String badStreetName) {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address(badStreetName, 666, "postalCode", "city");
@@ -193,7 +204,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
 
     }
 
@@ -203,6 +214,7 @@ class CustomerTest {
     void givenANullOrEmptyPosatalCodeWhenCreatingCustomerThrowsIllegalArgumentException(String badPostalCode) {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, badPostalCode, "city");
@@ -210,7 +222,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
 
     }
     @ParameterizedTest
@@ -219,6 +231,7 @@ class CustomerTest {
     void givenANullOrEmptyCityWhenCreatingCustomerThrowsIllegalArgumentException(String badCity) {
 
         //given
+        String userName = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", badCity);
@@ -226,8 +239,22 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new Customer(userName,name, email, address, phoneNumber));
 
+    }
+
+    @Test
+    @DisplayName("given a bad username when creating a user then trhow exception")
+    void givenABadUsernameWhenCreatingAUserThenTrhowException() {
+
+        //given
+        String username = "Bruenor the terrible url";
+        Name name = new Name("Bruenor", "The Bard");
+        String email = "bruenor@bardcollege.org";
+        Address address = new Address("streetName", 666, "postalCode", "city");
+        String phoneNumber = "+32444555666";
+        //when /then
+        assertThrows(IllegalArgumentException.class, ()-> new Customer(username,name, email, address, phoneNumber));
     }
 
 

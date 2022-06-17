@@ -22,7 +22,7 @@ public class UserRepository {
     }
 
     private Map<String, User> createAndInitializeUserMap() {
-        User admin = new Admin(new Name("Brecht", "Van Rie"), "brecht.vanrie@gmail.com");
+        User admin = new Admin("B-rex",new Name("Brecht", "Van Rie"), "brecht.vanrie@gmail.com");
         userMap = new HashMap<>();
         userMap.put(admin.email, admin);
         return userMap;

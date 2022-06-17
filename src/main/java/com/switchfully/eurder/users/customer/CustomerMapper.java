@@ -12,11 +12,11 @@ public class CustomerMapper {
 
     public CustomerDTO customerToCustomerDTO(Customer customer){
         logger.info("Customer transformed to DTO");
-        return new CustomerDTO(customer.getName(), customer.getEmail(), customer.getAddress(), customer.getPhoneNumber());
+        return new CustomerDTO(customer.getUserName(),customer.getName(), customer.getEmail(), customer.getAddress(), customer.getPhoneNumber());
     }
 
     public Customer customerDTOToCustomer(CustomerDTO customerDTO){
         logger.info("DTO transformed to Customer");
-        return new Customer(customerDTO.getName(),customerDTO.getEmail(),customerDTO.getAddress(),customerDTO.getPhoneNumber());
+        return new Customer(customerDTO.getUserName(),customerDTO.getName(),customerDTO.getEmail(),customerDTO.getAddress(),customerDTO.getPhoneNumber());
     }
 }

@@ -1,11 +1,9 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.ItemDTO;
-import com.switchfully.eurder.users.customer.CustomerDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -51,8 +49,8 @@ public class OrderController {
         logger.info("Order "+ orderId+" confirmed.");
         return orderService.confirmOrder(orderDTO);
     }
-    @GetMapping(path="/{userName}",produces = "application/json")
-    public List<OrderDTO> getAllOrders(@PathVariable String userName){
-
-    }
+//    @GetMapping(path="/{userName}",produces = "application/json")
+//    public List<OrderDTO> getAllOrders(@PathVariable String userName){
+//
+//    }
 }

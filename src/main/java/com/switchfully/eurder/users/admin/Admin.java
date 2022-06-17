@@ -4,7 +4,7 @@ import com.switchfully.eurder.users.Name;
 import com.switchfully.eurder.users.User;
 
 public class Admin extends User {
-    public Admin(Name name, String email) {
-        super(name, email);
+    public Admin(String userName, Name name, String email) {
+        super(userName, name, email);
     }
 }

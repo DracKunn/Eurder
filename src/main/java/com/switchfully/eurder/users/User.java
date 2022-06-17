@@ -6,17 +6,19 @@ import java.util.Objects;
 import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public abstract class User {
-
+    protected final String userName;
     protected final Name name;
     protected final String email;
 
-    protected User(Name name, String email) throws IllegalArgumentException {
+    protected User(String userName, Name name, String email) throws IllegalArgumentException {
+        this.userName = validateURLFriendly(userName);
         this.name = validateName(name);
         this.email = validateEmail(email);
     }
 
-
-
+    public String getUserName() {
+        return userName;
+    }
 
     public Name getName() {
         return name;

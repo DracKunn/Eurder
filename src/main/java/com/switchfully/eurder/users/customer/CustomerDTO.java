@@ -6,15 +6,18 @@ import com.switchfully.eurder.users.UserDTO;
 
 import java.util.Objects;
 
+import static com.switchfully.eurder.util.ValidatorsUtility.validateAddress;
+import static com.switchfully.eurder.util.ValidatorsUtility.validatePhoneNumber;
+
 public class CustomerDTO extends UserDTO {
 
     private final Address address;
     private final String phoneNumber;
 
-    public CustomerDTO(Name name, String email, Address address, String phoneNumber) {
-        super(name, email);
-        this.address = address;
-        this.phoneNumber = phoneNumber;
+    public CustomerDTO(String useName,Name name, String email, Address address, String phoneNumber) {
+        super(useName,name, email);
+        this.address = validateAddress(address);
+        this.phoneNumber = validatePhoneNumber(phoneNumber);
     }
 
     public Address getAddress() {
