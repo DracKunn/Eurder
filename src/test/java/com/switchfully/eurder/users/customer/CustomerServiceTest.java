@@ -72,4 +72,17 @@ class CustomerServiceTest {
 
     }
 
+    @Test
+    @DisplayName("given a customer service , when trying to register a customer as null, then throw an illegal argument exception")
+    void givenACustomerServiceWhenTryingToRegisterACustomerAsNullThenThrowAnIllegalArgumentException() {
+
+        //given
+        UserRepository userRepository = new UserRepository();
+        CustomerMapper customerMapper = new CustomerMapper();
+        CustomerService customerService = new CustomerService(customerMapper, userRepository);
+        //when/then
+        assertThrows(IllegalArgumentException.class, ()-> customerService.registerNewCustomer(null));
+
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.switchfully.eurder.items;
 
-import com.switchfully.eurder.items.orders.ItemGroup;
+import com.switchfully.eurder.orders.ItemGroup;
 import org.springframework.stereotype.Service;
 
 import java.util.logging.Logger;

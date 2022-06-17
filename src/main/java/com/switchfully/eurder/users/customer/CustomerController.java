@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("customer")
+@RequestMapping("customers")
 public class CustomerController {
     private final java.util.logging.Logger logger = Logger.getLogger(this.getClass().getName());
     CustomerService customerService;
@@ -19,6 +19,8 @@ public class CustomerController {
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public CustomerDTO registerNewCustomer(@RequestBody CustomerDTO customerDTO) {
+
+        logger.info("attempting to register a member");
         String login = customerDTO.getEmail();
         logger.info("New customer with login: " + login + " registered.");
         return this.customerService.registerNewCustomer(customerDTO);

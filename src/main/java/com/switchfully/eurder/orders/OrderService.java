@@ -1,4 +1,4 @@
-package com.switchfully.eurder.items.orders;
+package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.ItemDTO;
 import com.switchfully.eurder.items.ItemService;

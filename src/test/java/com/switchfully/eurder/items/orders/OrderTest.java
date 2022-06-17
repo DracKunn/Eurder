@@ -1,6 +1,7 @@
 package com.switchfully.eurder.items.orders;
 
 import com.switchfully.eurder.items.Item;
+import com.switchfully.eurder.orders.Order;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

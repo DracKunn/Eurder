@@ -50,4 +50,6 @@ public class UserRepository {
     public List<Customer> getAllCustomers() {
         return customerMap.values().stream().toList();
     }
+
+
 }

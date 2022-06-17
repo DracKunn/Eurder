@@ -19,8 +19,12 @@ public class CustomerService {
         this.userRepository = userRepository;
     }
 
-    public CustomerDTO registerNewCustomer(CustomerDTO newCustomerDTO) {
+    public CustomerDTO registerNewCustomer(CustomerDTO newCustomerDTO) throws IllegalArgumentException{
+        isNotNull(newCustomerDTO, "new customer DTO");
         Customer newCustomer = this.customerMapper.customerDTOToCustomer(newCustomerDTO);
+        if (getAllCustomers().contains(newCustomer)){
+            throw new IllegalArgumentException(newCustomer + " already exists.");
+        }
         this.userRepository.addNewCustomer(newCustomer);
         logger.info("A new customer has been created: " + newCustomer);
         return newCustomerDTO;
@@ -34,13 +38,23 @@ public class CustomerService {
         List<Customer> customers = this.getAllCustomers();
         List<CustomerDTO> customerDTOS = new ArrayList<>();
         for (Customer customer : customers) {
-            customerDTOS.add(customerMapper.customerToCustomerDTO(customer));
+            customerDTOS.add(getCustomerDTO(customer));
         }
         return customerDTOS;
     }
 
+    private CustomerDTO getCustomerDTO(Customer customer) {
+        return this.customerMapper.customerToCustomerDTO(customer);
+    }
+
     public CustomerDTO getCustomerByEmail(String email) {
         Customer customer = this.userRepository.getCustomerByEmail(email);
-        return this.customerMapper.customerToCustomerDTO(customer);
+        return getCustomerDTO(customer);
+    }
+
+    public static void isNotNull(CustomerDTO customerDTOToValidate, String variableFieldName) throws IllegalArgumentException{
+        if (customerDTOToValidate == null) {
+            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
+        }
     }
 }
