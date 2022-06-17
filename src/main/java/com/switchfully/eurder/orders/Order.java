@@ -1,26 +1,24 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
-import com.switchfully.eurder.util.ValidatorsUtility;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public class Order {
-    public static final String OWASP_ORDERID_VALIDATION = "'\s'";
 
     private final String orderId;
     private final Map<String, ItemGroup> orderedItems;
 
-    public Order(String orderId, Map<String, ItemGroup> orderedItems) {
-        this.orderId = validateOrderId(orderId);
+    public Order(String orderId, Map<String, ItemGroup> orderedItems) throws IllegalArgumentException {
+        this.orderId = validateStringNoSpace(orderId);
         this.orderedItems = orderedItems;
     }
 
-    public Order(String orderId){
-        this.orderId = validateOrderId(orderId);
+    public Order(String orderId) throws IllegalArgumentException {
+        this.orderId = validateStringNoSpace(orderId);
         this.orderedItems = new HashMap<>();
     }
 
@@ -36,20 +34,8 @@ public class Order {
         return orderedItems.get(itemName);
     }
 
-    public void addItemToOrder(Item item, int amount){
-        orderedItems.put(item.getName(),new ItemGroup(item,amount));
-    }
-
-    private String validateOrderId(String orderId)throws IllegalArgumentException{
-        ValidatorsUtility.isNotNullOrEmpty(orderId,"order ID");
-        Pattern pattern = Pattern.compile(OWASP_ORDERID_VALIDATION);
-        Matcher matcher = pattern.matcher(orderId);
-        if (!matcher.matches()) {
-
-            throw new IllegalArgumentException("invalid order ID format");
-        }
-        return orderId;
-
+    public void addItemToOrder(Item item, int amount) {
+        orderedItems.put(item.getName(), new ItemGroup(item, amount));
     }
 
 }

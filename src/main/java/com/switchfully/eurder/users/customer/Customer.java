@@ -3,16 +3,12 @@ package com.switchfully.eurder.users.customer;
 import com.switchfully.eurder.users.Address;
 import com.switchfully.eurder.users.Name;
 import com.switchfully.eurder.users.User;
-import com.switchfully.eurder.util.ValidatorsUtility;
 
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public class Customer extends User {
-    public static final String PHONE_VALIDATION =
-            "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$"
-                    + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$";
     private final Address address;
     private final String phoneNumber;
 
@@ -28,25 +24,6 @@ public class Customer extends User {
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    //  Phone-number has to be of one of the following formats: 2055550125, 202 555 0125, (202) 555-0125, +111 (202) 555-0125,
-    //      636 856 789, +111 636 856 789, 636 85 67 89, +111 636 85 67 89
-    private static String validatePhoneNumber(String phoneNumber) throws IllegalArgumentException {
-        ValidatorsUtility.isNotNullOrEmpty(phoneNumber,"phone number");
-        Pattern pattern = Pattern.compile(PHONE_VALIDATION);
-        Matcher matcher = pattern.matcher(phoneNumber);
-        if (!matcher.matches()) {
-            throw new IllegalArgumentException("Invalid phone-number format");
-        }
-        return phoneNumber;
-    }
-
-    private static Address validateAddress(Address address) throws IllegalArgumentException {
-        ValidatorsUtility.isNotNullOrEmpty(address.streetName(), "street name");
-        ValidatorsUtility.isNotNullOrEmpty(address.postalCode(), "postal code");
-        ValidatorsUtility.isNotNullOrEmpty(address.city(), "city");
-        return address;
     }
 
     @Override

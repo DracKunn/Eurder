@@ -1,8 +1,8 @@
 package com.switchfully.eurder.items;
 
-import com.switchfully.eurder.util.ValidatorsUtility;
-
 import java.util.Objects;
+
+import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public class Item {
     private static final int ZERO = 0;
@@ -12,9 +12,8 @@ public class Item {
     private int stock;
 
     public Item(String name, String description) {
-        ValidatorsUtility.isNotNullOrEmpty(name, "item name");
-        ValidatorsUtility.isNotNullOrEmpty(description, "item description");
-        this.name = name;
+        isNotNullOrEmpty(description, "item description");
+        this.name = validateStringNoSpace(name);
         this.description = description;
         this.price = ZERO;
         this.stock = ZERO;
