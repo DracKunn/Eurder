@@ -9,6 +9,6 @@ public class OrderMapper {
     }
 
     public OrderDTO orderToOrderDTO(Order order){
-        return new OrderDTO(order.getOrderID(),order.getOrderedItems());
+        return new OrderDTO(order.getOrderId(),order.getOrderedItems());
     }
 }

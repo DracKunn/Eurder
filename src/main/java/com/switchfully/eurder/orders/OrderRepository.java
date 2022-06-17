@@ -14,7 +14,7 @@ public class OrderRepository {
     }
 
     public void placeOrder(Order order) {
-        orderMap.put(order.getOrderID(), order);
+        orderMap.put(order.getOrderId(), order);
     }
 
     public Order getOrderwithID(String id) {
