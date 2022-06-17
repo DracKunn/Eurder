@@ -22,7 +22,7 @@ public class OrderController {
     public OrderDTO addItemToNewOrder(@RequestBody OrderRequest orderRequest,@PathVariable String itemName){
         String orderId = orderRequest.orderId();
         int amount = orderRequest.amount();
-        logger.info("Looking to order the following item: "+itemName);
+        logger.info("Looking to create a new order '"+orderId+"' with the following item: "+itemName);
         ItemDTO itemDTO = orderService.itemService.getItemDTOFromItemName(itemName);
         Order order = orderService.addItemsToNewOrder(orderId,itemDTO,amount);
         logger.info(amount + " " + itemName + " added to new order "+ orderId+".");
@@ -34,13 +34,14 @@ public class OrderController {
     public OrderDTO addItemToExistingOrder(@RequestBody OrderRequest orderRequest,@PathVariable String itemName){
         String orderId = orderRequest.orderId();
         int amount = orderRequest.amount();
+        logger.info("Looking to add item "+itemName+" to order '"+orderId+"'.");
         ItemDTO itemDTO = orderService.itemService.getItemDTOFromItemName(itemName);
         Order order = orderService.addItemsToExistingOrder(orderId,itemDTO,amount);
         logger.info(amount + " " + itemName + " added to order "+ orderId+".");
         return orderService.orderMapper.orderToOrderDTO(order);
     }
 
-    @PostMapping(path="/{orderId}/confirm",consumes = "application/json", produces = "application/json")
+    @PostMapping(path="/{orderId}/confirm", produces = "application/json")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public OrderDTO confirmOrder(@PathVariable String orderId){
         Order order = orderService.orderRepository.getOrderwithID(orderId);
