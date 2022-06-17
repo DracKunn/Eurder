@@ -207,8 +207,8 @@ class OrderServiceTest {
     }
 
     @Test
-    @DisplayName("given an item and an order, when I order more of the same item and the stock is insufficient, then a new itemgroup is created with a later shipping date")
-    void givenAnItemAndAnOrderWhenIOrderMoreOfTheSameItemAndTheStockIsInsufficientThenANewItemgroupIsCreatedWithALaterShippingDate() {
+    @DisplayName("given an item and an order, when I order more of the same item and the stock is insufficient, then updated with a later shipping date")
+    void givenAnItemAndAnOrderWhenIOrderMoreOfTheSameItemAndTheStockIsInsufficientThenWithALaterShippingDate() {
 
         //given
         String itemName = "item";
@@ -226,7 +226,9 @@ class OrderServiceTest {
         orderService.addItemsToExistingOrder(orderId, itemDTO, 100);
 
         //then
-        assertEquals(LocalDate.now().plusWeeks(1), order.getOrderedItems().get(itemName).getShippingDate());
+        LocalDate actual = order.getOrderedItems().get(itemName).getShippingDate();
+        LocalDate expected = LocalDate.now().plusWeeks(1);
+        assertEquals(expected, actual);
 
     }
 
@@ -234,27 +236,27 @@ class OrderServiceTest {
     @DisplayName("given an item and an order that is more than the stock, when i order more of the same item, the amount ordered increases appropriately")
     void givenAnItemAndAnOrderThatIsMoreThanTheStockWhenIOrderMoreOfTheSameItemTheAmountOrderedIncreasesAppropriately() {
 
-        fail("Not implemented");
         //given
+        String itemName = "item";
+        Item item = new Item(itemName, "test item");
+        item.setPrice(0.1).setStock(100);
+        ItemMapper itemMapper = new ItemMapper();
+        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
+        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
+        itemService.addItem(itemDTO);
 
+        String orderId = "order";
+        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
+        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
         //when
+        orderService.addItemsToExistingOrder(orderId, itemDTO, 100);
 
         //then
+        int actual = order.getOrderedItems().get(itemName).getAmount();
+        assertEquals(105, actual);
 
     }
 
-    @Test
-    @DisplayName("given an order of an item, when I want to see that order then I can see the items in the order and the amount")
-    void givenAnOrderOfAnItemWhenIWantToSeeThatOrderThenICanSeeTheItemsInTheOrderAndTheAmount() {
-
-        org.junit.jupiter.api.Assertions.fail("Not implemented");
-        //given
-
-        //when
-
-        //then
-
-    }
 
 
 }
