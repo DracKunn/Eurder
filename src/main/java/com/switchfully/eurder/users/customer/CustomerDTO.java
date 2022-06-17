@@ -31,12 +31,25 @@ public class CustomerDTO extends UserDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CustomerDTO that)) return false;
+        if (!(o instanceof CustomerDTO)) return false;
+        if (!super.equals(o)) return false;
+        CustomerDTO that = (CustomerDTO) o;
         return getAddress().equals(that.getAddress()) && getPhoneNumber().equals(that.getPhoneNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAddress(), getPhoneNumber());
+        return Objects.hash(super.hashCode(), getAddress(), getPhoneNumber());
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", userName='" + userName + '\'' +
+                ", name=" + name +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

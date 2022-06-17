@@ -32,11 +32,11 @@ public abstract class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return getName().equals(user.getName()) && getEmail().equals(user.getEmail());
+        return getUserName().equals(user.getUserName()) && getName().equals(user.getName()) && getEmail().equals(user.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getEmail());
+        return Objects.hash(getUserName(), getName(), getEmail());
     }
 }

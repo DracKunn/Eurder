@@ -1,9 +1,12 @@
 package com.switchfully.eurder.util;
 
+import com.switchfully.eurder.orders.Order;
 import com.switchfully.eurder.users.Address;
 import com.switchfully.eurder.users.Name;
+import com.switchfully.eurder.users.customer.Customer;
 import com.switchfully.eurder.users.customer.CustomerDTO;
 
+import java.nio.file.AccessDeniedException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,6 +36,12 @@ public class ValidatorsUtility {
 
     public static void isNotNull(CustomerDTO customerDTOToValidate, String variableFieldName) {
         if (customerDTOToValidate == null) {
+            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
+        }
+    }
+
+    public static void isNotNull(Customer customerToValidate, String variableFieldName) {
+        if (customerToValidate == null) {
             throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }
     }
@@ -80,5 +89,11 @@ public class ValidatorsUtility {
             throw new IllegalArgumentException("street number must be greater than 0");
         }
         return address;
+    }
+
+    public static void validateCustomerHasThisOrder(Customer customer, Order order) throws AccessDeniedException {
+        if (!order.getCustomer().equals(customer)){
+            throw new AccessDeniedException("this user cannot view this order");
+        }
     }
 }

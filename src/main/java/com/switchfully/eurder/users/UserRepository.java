@@ -24,7 +24,7 @@ public class UserRepository {
     private Map<String, User> createAndInitializeUserMap() {
         User admin = new Admin("B-rex",new Name("Brecht", "Van Rie"), "brecht.vanrie@gmail.com");
         userMap = new HashMap<>();
-        userMap.put(admin.email, admin);
+        userMap.put(admin.userName, admin);
         return userMap;
     }
 
@@ -34,18 +34,18 @@ public class UserRepository {
     }
 
     public Customer addNewCustomer(Customer customer) {
-        userMap.put(customer.email, customer);
-        customerMap.put(customer.email, customer);
+        userMap.put(customer.userName, customer);
+        customerMap.put(customer.userName, customer);
         logger.info("User " + customer + " has been added.");
         return customer;
     }
 
 
-    public User getUserByEmail(String email) {
-        return userMap.get(email);
+    public User getUserByUserName(String userName) {
+        return userMap.get(userName);
     }
 
-    public Customer getCustomerByEmail(String email){return customerMap.get(email);}
+    public Customer getCustomerByUserName(String userName){return customerMap.get(userName);}
 
     public List<Customer> getAllCustomers() {
         return customerMap.values().stream().toList();

@@ -14,7 +14,7 @@ import static com.switchfully.eurder.util.ValidatorsUtility.isNotNull;
 public class CustomerService {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    CustomerMapper customerMapper;
+    public CustomerMapper customerMapper;
     UserRepository userRepository;
 
     public CustomerService(CustomerMapper customerMapper, UserRepository userRepository) {
@@ -54,10 +54,12 @@ public class CustomerService {
         return this.customerMapper.customerToCustomerDTO(customer);
     }
 
-    public CustomerDTO getCustomerByEmail(String email) {
-        Customer customer = this.userRepository.getCustomerByEmail(email);
+
+    public CustomerDTO getCustomerByUserName(String userName) {
+        Customer customer = this.userRepository.getCustomerByUserName(userName);
         return getCustomerDTO(customer);
     }
+
 
 
 }

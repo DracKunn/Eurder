@@ -1,6 +1,7 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
+import com.switchfully.eurder.users.customer.Customer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,18 +9,28 @@ import java.util.Map;
 import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public class Order {
-
+    private final Customer customer;
     private final String orderId;
     private final Map<String, ItemGroup> orderedItems;
 
-    public Order(String orderId, Map<String, ItemGroup> orderedItems) throws IllegalArgumentException {
+    public Order(Customer customer,String orderId, Map<String, ItemGroup> orderedItems) throws IllegalArgumentException {
+        isNotNull(customer, "customer");
+        this.customer = customer;
         this.orderId = validateURLFriendly(orderId);
         this.orderedItems = orderedItems;
     }
 
-    public Order(String orderId) throws IllegalArgumentException {
+    public Order(Customer customer,String orderId) throws IllegalArgumentException {
+        isNotNull(customer, "customer");
+        this.customer = customer;
         this.orderId = validateURLFriendly(orderId);
         this.orderedItems = new HashMap<>();
+
+
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 
     public String getOrderId() {

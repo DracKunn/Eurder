@@ -33,10 +33,10 @@ public class CustomerController {
         return this.customerService.viewAllCustomers();
     }
 
-    @GetMapping(path = "/{email}", produces = "application/json")
+    @GetMapping(path = "/{userName}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDTO viewCustomer(@PathVariable String email){
-        return this.customerService.getCustomerByEmail(email);
+    public CustomerDTO viewCustomer(@PathVariable String userName){
+        return this.customerService.getCustomerByUserName(userName);
     }
 
 }

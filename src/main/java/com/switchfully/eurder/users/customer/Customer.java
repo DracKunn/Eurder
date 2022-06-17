@@ -34,8 +34,9 @@ public class Customer extends User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Customer customer)) return false;
+        if (!(o instanceof Customer)) return false;
         if (!super.equals(o)) return false;
+        Customer customer = (Customer) o;
         return getAddress().equals(customer.getAddress()) && getPhoneNumber().equals(customer.getPhoneNumber());
     }
 

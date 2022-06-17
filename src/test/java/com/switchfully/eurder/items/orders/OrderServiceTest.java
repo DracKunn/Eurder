@@ -2,110 +2,124 @@ package com.switchfully.eurder.items.orders;
 
 import com.switchfully.eurder.items.*;
 import com.switchfully.eurder.orders.*;
+import com.switchfully.eurder.users.Address;
+import com.switchfully.eurder.users.Name;
+import com.switchfully.eurder.users.UserRepository;
+import com.switchfully.eurder.users.customer.Customer;
+import com.switchfully.eurder.users.customer.CustomerMapper;
+import com.switchfully.eurder.users.customer.CustomerService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
+    static Item headphones = new Item("Headphones", "portable sound listening electronic device");
+
+    static Item apples = new Item("Apples", "Fruit, tart, juicy");
+    static Item bananas = new Item("Bananas", "Fruit, sweet, tasty");
+
+    static ItemMapper itemMapper = new ItemMapper();
+    static ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
+    static ItemDTO applesDTO = itemMapper.itemToItemDTO(apples);
+    static ItemDTO bananaDTO = itemMapper.itemToItemDTO(bananas);
+    static ItemRepository itemRepository = new ItemRepository();
+    static ItemService itemService = new ItemService(itemMapper, itemRepository);
+
+    //given customer + customer service
+    static String userName = "bruenor";
+    static Name name = new Name("Bruenor", "The Bard");
+    static String email = "bruenor@bardcollege.org";
+    static Address address = new Address("streetName", 666, "postalCode", "city");
+    static String phoneNumber = "+32444555666";
+    static Customer customer = new Customer(userName, name, email, address, phoneNumber);
+
+    static UserRepository userRepository = new UserRepository();
+    static CustomerMapper customerMapper = new CustomerMapper();
+    static CustomerService customerService = new CustomerService(customerMapper, userRepository);
+
+    //order items in 2 orders
+    static String headphonesOrderId = "headphones";
+    static String fruitOrderId = "fruit";
+    static OrderMapper orderMapper = new OrderMapper();
+    static OrderRepository orderRepository = new OrderRepository();
+    static OrderService orderService = new OrderService(orderMapper, orderRepository, itemService, customerService);
+
+
+    @BeforeEach
+    static void setUp() {
+        //given items into warehouse
+        headphones.setPrice(75.99).setStock(20);
+        apples.setPrice(0.50).setStock(100);
+        bananas.setPrice(1).setStock(60);
+
+        itemService.addItem(headphonesDTO);
+        itemService.addItem(applesDTO);
+        itemService.addItem(bananaDTO);
+
+        userRepository.addNewCustomer(customer);
+
+
+    }
+
     @Test
     @DisplayName("given a webshop and warehouse with items when i add items to order without an existing order then i can see my ordered items")
-    void givenAWebshopAndWarehouseWithItemsWhenIAddItemsToOrderWithoutAnExistingOrderThenICanSeeMyOrderedItems() {
+    void givenAWebshopAndWarehouseWithItemsWhenIAddItemsToOrderWithoutAnExistingOrderThenICanSeeMyOrderedItems() throws AccessDeniedException {
 
 
         //given
-        int headphonesStock = 50;
-        int amountOfHeadphonesToBuy = 5;
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(headphonesStock);
+        int stock = 20;
+        int amountToBuy = 5;
+        headphones.setStock(stock);
 
-        ItemRepository warehouse = new ItemRepository();
-        warehouse.addItem(headphones);
-
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-
-        ItemService webStock = new ItemService(itemMapper, warehouse);
-        OrderRepository shoppingBasket = new OrderRepository();
-        OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper, shoppingBasket, webStock);
 
         //when
-        Order order = orderService.addItemsToNewOrder("ID", headphonesDTO, amountOfHeadphonesToBuy);
+        Order order = orderService.addItemsToNewOrder(userName, headphonesOrderId, headphonesDTO, amountToBuy);
 
         //then
-        Order expected = shoppingBasket.getOrderwithID("ID");
+        Order expected = orderMapper.orderDTOToOrder(orderService.getOrderDTOByOrderId(userName, headphonesOrderId));
         assertEquals(expected, order);
     }
 
     @Test
     @DisplayName("given a webshop and warehouse with items and an existing order, when i add another item to my order then i can see both items in my order")
-    void givenAWebshopAndWarehouseWithItemsAndAnExistingOrderWhenIAddAnotherItemToMyOrderThenICanSeeBothItemsInMyOrder() {
+    void givenAWebshopAndWarehouseWithItemsAndAnExistingOrderWhenIAddAnotherItemToMyOrderThenICanSeeBothItemsInMyOrder() throws AccessDeniedException {
 
         //given
-        int headphonesStock = 50;
-        int amountOfHeadphonesToBuy = 5;
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(headphonesStock);
 
-        Item sweaters = new Item("Sweater", "Warm clothing covering the torso and arms");
-        sweaters.setPrice(25.75).setStock(100);
-
-        ItemRepository warehouse = new ItemRepository();
-        warehouse.addItem(headphones);
-        warehouse.addItem(sweaters);
-
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-        ItemDTO sweatersDTO = itemMapper.itemToItemDTO(sweaters);
-
-        ItemService webStock = new ItemService(itemMapper, warehouse);
-        OrderRepository shoppingBasket = new OrderRepository();
-        OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper, shoppingBasket, webStock);
-
-        Order orderDTO = orderService.addItemsToNewOrder("Shopping", headphonesDTO, amountOfHeadphonesToBuy);
+        orderService.addItemsToNewOrder(userName, fruitOrderId, applesDTO, 50);
 
         //when
-        Order secondOrderDTO = orderService.addItemsToExistingOrder("Shopping", sweatersDTO, 20);
+        Order secondOrderDTO = orderService.addItemsToExistingOrder(userName, fruitOrderId, bananaDTO, 20);
 
         //then
-        assertTrue(shoppingBasket.getOrderMap().containsValue(secondOrderDTO));
+        assertTrue(orderRepository.getOrderMap().containsValue(secondOrderDTO));
     }
 
     @Test
     @DisplayName("given a webshop, when i place the order, the amount is removed from the stock")
-    void givenAWebshopWhenIPlaceTheOrderTheAmountIsRemovedFromTheStock() {
+    void givenAWebshopWhenIPlaceTheOrderTheAmountIsRemovedFromTheStock() throws AccessDeniedException {
 
         //given
         int headphonesStock = 50;
         int amountOfHeadphonesToBuy = 5;
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(headphonesStock);
+        headphones.setStock(headphonesStock);
 
-        ItemRepository warehouse = new ItemRepository();
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-        ItemService webStock = new ItemService(itemMapper, warehouse);
-
-        webStock.addItem(headphonesDTO);
-
-        OrderRepository orderRepository = new OrderRepository();
-        OrderMapper orderMapper = new OrderMapper();
-        OrderService webShop = new OrderService(orderMapper, orderRepository, webStock);
-
-        Order order = webShop.addItemsToNewOrder("buying-5-headphones", headphonesDTO, amountOfHeadphonesToBuy);
-        OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
-
+        String orderId = "buying-5-headphones";
+        orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, amountOfHeadphonesToBuy);
 
         //when
 
-        webShop.confirmOrder(orderDTO);
+        orderService.confirmOrder(userName, orderId);
         //then
         String itemName = headphones.getName();
-        int actual = warehouse.getItemByName(itemName).getStock();
+        int actual = itemRepository.getItemByName(itemName).getStock();
         int expected = headphonesStock - amountOfHeadphonesToBuy;
         assertEquals(expected, actual);
     }
@@ -114,17 +128,8 @@ class OrderServiceTest {
     @DisplayName("given an item, when i create a new order then the order exists and contains the item.")
     void givenAnItemWhenICreateANewOrderThenTheOrderExistsAndContainsTheItem() {
 
-        //given
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(100);
-
-        OrderRepository orderRepository = new OrderRepository();
-
-        ItemMapper itemMapper = new ItemMapper();
-
-        OrderService orderService = new OrderService(new OrderMapper(), orderRepository, new ItemService(itemMapper, new ItemRepository()));
         //when
-        Order actual = orderService.addItemsToNewOrder("Buying-one-pair-of-Headphones", itemMapper.itemToItemDTO(headphones), 1);
+        Order actual = orderService.addItemsToNewOrder(userName, "Buying-one-pair-of-Headphones", headphonesDTO, 1);
 
         //then
         assertTrue(orderRepository.getOrderMap().containsValue(actual));
@@ -133,28 +138,17 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("given an item with a stock and a webshop, when we confirm an order more than the current stock the stock is zero")
-    void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() {
+    void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() throws AccessDeniedException {
 
         //given
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(2);
-
-        ItemRepository itemRepository = new ItemRepository();
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-        ItemService itemService = new ItemService(itemMapper, itemRepository);
-
-        itemService.addItem(headphonesDTO);
-
-        OrderRepository orderRepository = new OrderRepository();
-        OrderMapper orderMapper = new OrderMapper();
-        OrderService orderService = new OrderService(orderMapper, orderRepository, itemService);
+        headphones.setStock(2);
 
         //when
-        Order order = orderService.addItemsToNewOrder("Buying-3-pairs-of-Headphones", headphonesDTO, 3);
-        OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
+        String orderId = "Buying-3-pairs-of-Headphones";
+        Order order = orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, 3);
 
-        orderService.confirmOrder(orderDTO);
+
+        orderService.confirmOrder(userName, orderId);
         String itemName = headphones.getName();
         int actual = itemRepository.getItemByName(itemName).getStock();
         //then
@@ -169,64 +163,39 @@ class OrderServiceTest {
         //given
         String orderId = "twee woorden";
 
-        Item headphones = new Item("Headphones", "portable sound listening electronic device");
-        headphones.setPrice(50.50).setStock(100);
-
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO itemDTO = itemMapper.itemToItemDTO(headphones);
-
-        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
-        itemService.addItem(itemDTO);
-
-        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
-
         //when / then
-        assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToNewOrder(orderId, itemDTO, 5));
+        assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, 5));
 
     }
 
     @Test
     @DisplayName("given an item and an order of that item, when I order more of the same item, the amount of the item order increases appropriately")
-    void givenAnItemAndAnOrderOfThatItemWhenIOrderMoreOfTheSameItemTheAmountOfTheItemOrderIncreasesAppropriately() {
+    void givenAnItemAndAnOrderOfThatItemWhenIOrderMoreOfTheSameItemTheAmountOfTheItemOrderIncreasesAppropriately() throws AccessDeniedException {
         //given
-        String itemName = "item";
-        Item item = new Item(itemName, "test item");
-        item.setPrice(0.1).setStock(100);
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
-        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
-        itemService.addItem(itemDTO);
 
         String orderId = "order";
-        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
-        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
+        Order order = orderService.addItemsToNewOrder(userName, orderId, applesDTO, 5);
         //when
-        orderService.addItemsToExistingOrder(orderId, itemDTO, 5);
+        orderService.addItemsToExistingOrder(userName, orderId, applesDTO, 5);
         //then
-        assertEquals(10, order.getOrderedItems().get(itemName).getAmount());
+        assertEquals(10, order.getOrderedItems().get(applesDTO.name()).getAmount());
     }
 
     @Test
     @DisplayName("given an item and an order, when I order more of the same item and the stock is insufficient, then updated with a later shipping date")
-    void givenAnItemAndAnOrderWhenIOrderMoreOfTheSameItemAndTheStockIsInsufficientThenWithALaterShippingDate() {
+    void givenAnItemAndAnOrderWhenIOrderMoreOfTheSameItemAndTheStockIsInsufficientThenWithALaterShippingDate() throws AccessDeniedException {
 
         //given
-        String itemName = "item";
-        Item item = new Item(itemName, "test item");
-        item.setPrice(0.1).setStock(100);
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
-        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
-        itemService.addItem(itemDTO);
+
+        apples.setPrice(0.1).setStock(100);
 
         String orderId = "order";
-        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
-        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
+        Order order = orderService.addItemsToNewOrder(userName, orderId, applesDTO, 5);
         //when
-        orderService.addItemsToExistingOrder(orderId, itemDTO, 100);
+        orderService.addItemsToExistingOrder(userName, orderId, applesDTO, 100);
 
         //then
-        LocalDate actual = order.getOrderedItems().get(itemName).getShippingDate();
+        LocalDate actual = order.getOrderedItems().get(applesDTO.name()).getShippingDate();
         LocalDate expected = LocalDate.now().plusWeeks(1);
         assertEquals(expected, actual);
 
@@ -234,29 +203,38 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("given an item and an order that is more than the stock, when i order more of the same item, the amount ordered increases appropriately")
-    void givenAnItemAndAnOrderThatIsMoreThanTheStockWhenIOrderMoreOfTheSameItemTheAmountOrderedIncreasesAppropriately() {
+    void givenAnItemAndAnOrderThatIsMoreThanTheStockWhenIOrderMoreOfTheSameItemTheAmountOrderedIncreasesAppropriately() throws AccessDeniedException {
 
         //given
-        String itemName = "item";
-        Item item = new Item(itemName, "test item");
-        item.setPrice(0.1).setStock(100);
-        ItemMapper itemMapper = new ItemMapper();
-        ItemDTO itemDTO = itemMapper.itemToItemDTO(item);
-        ItemService itemService = new ItemService(itemMapper, new ItemRepository());
-        itemService.addItem(itemDTO);
+        bananas.setPrice(0.1).setStock(100);
 
         String orderId = "order";
-        OrderService orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemService);
-        Order order = orderService.addItemsToNewOrder(orderId, itemDTO, 5);
+        Order order = orderService.addItemsToNewOrder(userName, orderId, bananaDTO, 5);
         //when
-        orderService.addItemsToExistingOrder(orderId, itemDTO, 100);
+        orderService.addItemsToExistingOrder(userName, orderId, bananaDTO, 100);
 
         //then
-        int actual = order.getOrderedItems().get(itemName).getAmount();
+        int actual = order.getOrderedItems().get(bananaDTO.name()).getAmount();
         assertEquals(105, actual);
 
     }
 
+    @Test
+    @DisplayName("given three items, spread over two orders, for one customer, then when we get all orders, a list is returned with all orders for that user")
+    void givenThreeItemsSpreadOverTwoOrdersForOneCustomerThenWhenWeGetAllOrdersAListIsReturnedWithAllOrdersForThatUser() throws AccessDeniedException {
 
+        //given
+        orderService.addItemsToNewOrder(userName, headphonesOrderId, headphonesDTO, 5);
+        orderService.addItemsToNewOrder(userName, fruitOrderId, applesDTO, 20);
+        orderService.addItemsToExistingOrder(userName, fruitOrderId, bananaDTO, 20);
+        //when
+        List<OrderDTO> actual = orderService.getAllOrdersForUser(userName);
+        //then
+        OrderDTO headphonesOrderDTO = orderService.getOrderDTOByOrderId(userName, headphonesOrderId);
+        OrderDTO fruitOrderDTO = orderService.getOrderDTOByOrderId(userName, fruitOrderId);
+        List<OrderDTO> expected = List.of(headphonesOrderDTO, fruitOrderDTO);
+        assertEquals(expected, actual);
+
+    }
 
 }

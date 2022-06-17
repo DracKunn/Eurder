@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderMapper {
     public Order orderDTOToOrder(OrderDTO orderDTO) {
-        return new Order(orderDTO.orderID(),orderDTO.orderedItems());
+        return new Order(orderDTO.customer(),orderDTO.orderID(),orderDTO.orderedItems());
     }
 
     public OrderDTO orderToOrderDTO(Order order){
-        return new OrderDTO(order.getOrderId(),order.getOrderedItems());
+        return new OrderDTO(order.getCustomer(),order.getOrderId(),order.getOrderedItems());
     }
 }

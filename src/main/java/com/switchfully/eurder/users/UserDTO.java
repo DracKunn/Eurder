@@ -31,12 +31,13 @@ public abstract class UserDTO {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return getName().equals(user.getName()) && getEmail().equals(user.getEmail());
+        if (!(o instanceof UserDTO)) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return getUserName().equals(userDTO.getUserName()) && getName().equals(userDTO.getName()) && getEmail().equals(userDTO.getEmail());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getEmail());
+        return Objects.hash(getUserName(), getName(), getEmail());
     }
 }
