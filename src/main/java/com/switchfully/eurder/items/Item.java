@@ -13,7 +13,7 @@ public class Item {
 
     public Item(String name, String description) {
         isNotNullOrEmpty(description, "item description");
-        this.name = validateStringNoSpace(name);
+        this.name = validateURLFriendly(name);
         this.description = description;
         this.price = ZERO;
         this.stock = ZERO;

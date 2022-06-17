@@ -13,12 +13,12 @@ public class Order {
     private final Map<String, ItemGroup> orderedItems;
 
     public Order(String orderId, Map<String, ItemGroup> orderedItems) throws IllegalArgumentException {
-        this.orderId = validateStringNoSpace(orderId);
+        this.orderId = validateURLFriendly(orderId);
         this.orderedItems = orderedItems;
     }
 
     public Order(String orderId) throws IllegalArgumentException {
-        this.orderId = validateStringNoSpace(orderId);
+        this.orderId = validateURLFriendly(orderId);
         this.orderedItems = new HashMap<>();
     }
 

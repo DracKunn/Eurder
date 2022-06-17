@@ -94,7 +94,7 @@ class OrderServiceTest {
         OrderMapper orderMapper = new OrderMapper();
         OrderService webShop = new OrderService(orderMapper, orderRepository, webStock);
 
-        Order order = webShop.addItemsToNewOrder("buying 5 headphones", headphonesDTO, amountOfHeadphonesToBuy);
+        Order order = webShop.addItemsToNewOrder("buying-5-headphones", headphonesDTO, amountOfHeadphonesToBuy);
         OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
 
 
@@ -122,7 +122,7 @@ class OrderServiceTest {
 
         OrderService orderService = new OrderService(new OrderMapper(), orderRepository, new ItemService(itemMapper, new ItemRepository()));
         //when
-        Order actual = orderService.addItemsToNewOrder("Buying one pair of Headphones", itemMapper.itemToItemDTO(headphones), 1);
+        Order actual = orderService.addItemsToNewOrder("Buying-one-pair-of-Headphones", itemMapper.itemToItemDTO(headphones), 1);
 
         //then
         assertTrue(orderRepository.getOrderMap().containsValue(actual));
@@ -149,7 +149,7 @@ class OrderServiceTest {
         OrderService orderService = new OrderService(orderMapper, orderRepository, itemService);
 
         //when
-        Order order = orderService.addItemsToNewOrder("Buying 3 pairs of Headphones", headphonesDTO, 3);
+        Order order = orderService.addItemsToNewOrder("Buying-3-pairs-of-Headphones", headphonesDTO, 3);
         OrderDTO orderDTO = orderMapper.orderToOrderDTO(order);
 
         orderService.confirmOrder(orderDTO);

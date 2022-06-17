@@ -12,29 +12,33 @@ class ItemTest {
     @Test
     @DisplayName("given a name and descprition when creating item then ok")
     void givenANameAndDescpritionWhenCreatingItemThenOk() {
-
- //given
-    String name = "bottle";
-    String description = "receptacle for liquids";
- //when
-        Item bottle = new Item(name,description);
-
- //then
-   assertEquals(new Item("bottle", "receptacle for liquids"), bottle);
+        //given
+        String name = "bottle";
+        String description = "receptacle for liquids";
+        //when
+        Item bottle = new Item(name, description);
+        //then
+        assertEquals(new Item("bottle", "receptacle for liquids"), bottle);
     }
 
     @ParameterizedTest
     @NullAndEmptySource
     @DisplayName("given a null or blank name when creating an item then throw exception")
     void givenANullOrBlankNameWhenCreatingAnItemThenThrowException(String name) {
-
- //given
-
+        //given
         String description = "receptacle for liquids";
- //when
-
- //then
+        //when/then
         assertThrows(IllegalArgumentException.class, () -> new Item(name, description));
+    }
+
+    @Test
+    @DisplayName("given a name with a space, when creating an item, then throws exception")
+    void givenANameWithASpaceWhenCreatingAnItemThenThrowsException() {
+        //given
+        String illegalName = "Water Bottle";
+        String description = "receptacle for liquids";
+        //when/then
+        assertThrows(IllegalArgumentException.class, () -> new Item(illegalName, description));
 
     }
 
@@ -42,45 +46,35 @@ class ItemTest {
     @NullAndEmptySource
     @DisplayName("given a null or blank description when creating an item then throw exception")
     void givenANullOrBlankDescriptionWhenCreatingAnItemThenThrowException(String description) {
-
         //given
-
         String name = "bottle";
-        //when
-
-        //then
+        //when/then
         assertThrows(IllegalArgumentException.class, () -> new Item(name, description));
-
     }
 
     @Test
     @DisplayName("given an item, when setting the price, the price is changed")
     void givenAnItemWhenSettingThePriceThePriceIsChanged() {
-
- //given
-        String name = "bottle";
-        String description = "receptacle for liquids";
-        Item bottle = new Item(name,description);
-
- //when
-    bottle.setPrice(0.5);
- //then
-   assertEquals(0.5,bottle.getPrice());
-    }
-
-    @Test
-    @DisplayName("given an item, when setting the stock, the price is changed")
-    void givenAnItemWhenSettingThePriceTheStockIsChanged() {
-
         //given
         String name = "bottle";
         String description = "receptacle for liquids";
-        Item bottle = new Item(name,description);
+        Item bottle = new Item(name, description);
+        //when
+        bottle.setPrice(0.5);
+        //then
+        assertEquals(0.5, bottle.getPrice());
+    }
 
+    @Test
+    @DisplayName("given an item, when setting the stock, the stock is changed")
+    void givenAnItemWhenSettingTheStock_thenTheStockIsChanged() {
+        //given
+        String name = "bottle";
+        String description = "receptacle for liquids";
+        Item bottle = new Item(name, description);
         //when
         bottle.setStock(100);
         //then
-        assertEquals(100,bottle.getStock());
+        assertEquals(100, bottle.getStock());
     }
-
 }

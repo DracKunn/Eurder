@@ -8,11 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidatorsUtility {
-    public static final String OWASP_SPACE_VALIDATION = "'\s'";
+    public static final String LEGAL_URL_ADDRESS_CHARACTERS = "^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$";
     public static final String OWASP_EMAIL_VALIDATION = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
     public static final String OWASP_PHONE_VALIDATION = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$" + "|^(\\+\\d{1,3}( )?)?(\\d{3}[ ]?){2}\\d{3}$";
-
 
     private ValidatorsUtility() {
         throw new IllegalStateException("Utility class");
@@ -38,17 +37,17 @@ public class ValidatorsUtility {
         }
     }
 
-    public static String validateStringNoSpace(String string) throws IllegalArgumentException{
+    public static String validateURLFriendly(String string) throws IllegalArgumentException {
         isNotNullOrEmpty(string, "order ID");
-        Pattern pattern = Pattern.compile(OWASP_SPACE_VALIDATION);
+        Pattern pattern = Pattern.compile(LEGAL_URL_ADDRESS_CHARACTERS);
         Matcher matcher = pattern.matcher(string);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("field cannot contain a space");
+            throw new IllegalArgumentException("field cannot contain a space or URL unfriendly characters.");
         }
         return string;
     }
 
-    public static String validateEmail(String email) throws IllegalArgumentException{
+    public static String validateEmail(String email) throws IllegalArgumentException {
         isNotNullOrEmpty(email, "email");
         Pattern pattern = Pattern.compile(OWASP_EMAIL_VALIDATION);
         Matcher matcher = pattern.matcher(email);
@@ -59,7 +58,7 @@ public class ValidatorsUtility {
     }
 
     public static Name validateName(Name name) throws IllegalArgumentException {
-        areNotNullOrEmpty(name.firstName(), name.firstName());
+        areNotNullOrEmpty(name.firstName(), name.lastName());
         return name;
     }
 
@@ -77,7 +76,7 @@ public class ValidatorsUtility {
 
     public static Address validateAddress(Address address) throws IllegalArgumentException {
         areNotNullOrEmpty(address.streetName(), address.postalCode(), address.city());
-        if (address.streetNumber() <= 0){
+        if (address.streetNumber() <= 0) {
             throw new IllegalArgumentException("street number must be greater than 0");
         }
         return address;

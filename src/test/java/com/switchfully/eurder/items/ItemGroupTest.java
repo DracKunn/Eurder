@@ -14,7 +14,7 @@ class ItemGroupTest {
     void givenAnItemAndAnAmountWhenCreatingAnItemGroupAShippingDateIsCreated() {
 
         //given
-        Item candyCanes = new Item("Candy canes", "Hard sugary candy sticks");
+        Item candyCanes = new Item("candy-Canes", "Hard sugary candy sticks");
         candyCanes.setPrice(0.05);
         candyCanes.setStock(100);
         //when
@@ -30,7 +30,7 @@ class ItemGroupTest {
     void givenAnItemAndAnAmountWhenCreatingAnItemGroupWithAnAmpountLessThanTheStockAShippingDateOfSevenDaysIsCreated() {
 
         //given
-        Item candyCanes = new Item("Candy canes", "Hard sugary candy sticks");
+        Item candyCanes = new Item("candy-Canes", "Hard sugary candy sticks");
         candyCanes.setPrice(0.05);
         candyCanes.setStock(2);
         //when
@@ -46,7 +46,7 @@ class ItemGroupTest {
     void givenAnItemgroupWhenThePriceOfTheOriginalItemChangesThePriceOfTheItemgroupDoesNotChange() {
 
         //given
-        Item candyCanes = new Item("Candy canes", "Hard sugary candy sticks");
+        Item candyCanes = new Item("candy-Canes", "Hard sugary candy sticks");
         candyCanes.setPrice(0.05);
         candyCanes.setStock(100);
         ItemGroup candyCaneGroup = new ItemGroup(candyCanes, 5);
