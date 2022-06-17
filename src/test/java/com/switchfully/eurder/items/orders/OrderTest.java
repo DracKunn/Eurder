@@ -4,6 +4,8 @@ import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.orders.Order;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,5 +29,24 @@ class OrderTest {
         //then
 
         assertEquals(amountOfSweatersToOrder, actual);
+    }
+
+    @Test
+    @DisplayName("given an order id with a space in the name, when creating the order, then throw illegal argument exception")
+    void givenAnOrderIdWithASpaceInTheNameWhenCreatingTheOrderThenThrowIllegalArgumentException() {
+
+        //given
+        String orderId = "twee woorden";
+        //when / then
+        assertThrows(IllegalArgumentException.class, ()-> new Order(orderId));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    @DisplayName("given an order id that is null or empty, when creating a new order, then an illegal argument exception is thrown")
+    void givenAnOrderIdThatIsNullOrEmpty_whenCreatingANewOrder_thenAnExceptionIsThrown(String orderId) {
+
+        assertThrows(IllegalArgumentException.class, ()-> new Order(orderId));
+
     }
 }

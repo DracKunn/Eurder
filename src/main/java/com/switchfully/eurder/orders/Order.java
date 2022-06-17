@@ -44,6 +44,7 @@ public class Order {
         Pattern pattern = Pattern.compile(OWASP_ORDERID_VALIDATION);
         Matcher matcher = pattern.matcher(orderId);
         if (!matcher.matches()) {
+
             throw new IllegalArgumentException("invalid order ID format");
         }
         return orderId;

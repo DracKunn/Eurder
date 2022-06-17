@@ -160,5 +160,28 @@ class OrderServiceTest {
         assertEquals(0, actual);
     }
 
+    @Test
+    @DisplayName("given an order ID containing a space, when adding an item to new order, then throws exception")
+    void givenAnOrderIdContainingASpaceWhenAddingAnItemToNewOrderThenThrowsException() {
+
+        //given
+        String orderId = "twee woorden";
+
+        Item headphones = new Item("Headphones", "portable sound listening electronic device");
+        headphones.setPrice(50.50).setStock(100);
+
+        ItemMapper itemMapper = new ItemMapper();
+        ItemDTO itemDTO = itemMapper.itemToItemDTO(headphones);
+
+        ItemService itemService = new ItemService(itemMapper,new ItemRepository());
+        itemService.addItem(itemDTO);
+
+        OrderService orderService = new OrderService(new OrderMapper(),new OrderRepository(),itemService);
+
+        //when / then
+        assertThrows(IllegalArgumentException.class, ()-> orderService.addItemsToNewOrder(orderId,itemDTO,5));
+
+    }
+
 
 }
