@@ -23,9 +23,9 @@ class OrderServiceTest {
     Item apples = new Item("Apples", "Fruit, tart, juicy");
     Item bananas = new Item("Bananas", "Fruit, sweet, tasty");
     ItemMapper itemMapper = new ItemMapper();
-    ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-    ItemDTO applesDTO = itemMapper.itemToItemDTO(apples);
-    ItemDTO bananaDTO = itemMapper.itemToItemDTO(bananas);
+    ItemDTO headphonesDTO;
+    ItemDTO applesDTO;
+    ItemDTO bananaDTO;
     ItemRepository itemRepository;
     ItemService itemService;
 
@@ -55,6 +55,10 @@ class OrderServiceTest {
         apples.setPrice(0.50).setStock(100);
         bananas.setPrice(1).setStock(60);
 
+        headphonesDTO = itemMapper.itemToItemDTO(headphones);
+        applesDTO = itemMapper.itemToItemDTO(apples);
+        bananaDTO = itemMapper.itemToItemDTO(bananas);
+
         itemRepository = new ItemRepository();
         itemService = new ItemService(itemMapper, itemRepository);
 
@@ -75,7 +79,7 @@ class OrderServiceTest {
 
     @Test
     @DisplayName("given a webshop and warehouse with items when i add items to order without an existing order then i can see my ordered items")
-    void givenAWebshopAndWarehouseWithItemsWhenIAddItemsToOrderWithoutAnExistingOrderThenICanSeeMyOrderedItems() throws AccessDeniedException {
+    void givenAWebshopAndWarehouseWithItemsWhenIAddItemsToOrderWithoutAnExistingOrderThenICanSeeMyOrderedItems() {
 
 
         //given
@@ -112,9 +116,10 @@ class OrderServiceTest {
     void givenAWebshopWhenIPlaceTheOrderTheAmountIsRemovedFromTheStock() throws AccessDeniedException {
 
         //given
-        int headphonesStock = 50;
+        int headphonesStock = headphones.getStock();
         int amountOfHeadphonesToBuy = 5;
         headphones.setStock(headphonesStock);
+
 
         String orderId = "buying-5-headphones";
         orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, amountOfHeadphonesToBuy);
@@ -146,8 +151,7 @@ class OrderServiceTest {
     void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() throws AccessDeniedException {
 
         //given
-        headphones.setStock(2);
-
+int stockBefore = headphones.getStock();
         //when
         String orderId = "Buying-3-pairs-of-Headphones";
         Order order = orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, 3);
@@ -158,7 +162,7 @@ class OrderServiceTest {
         int actual = itemRepository.getItemByName(itemName).getStock();
         //then
 
-        assertEquals(0, actual);
+        assertEquals(stockBefore-3, actual);
     }
 
     @Test

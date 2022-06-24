@@ -1,10 +1,13 @@
 package com.switchfully.eurder.items;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
 public class Item {
+//    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
     private static final int ZERO = 0;
     private final String name;
     private final String description;
@@ -44,6 +47,7 @@ public class Item {
 
     public Item setStock(int amount) {
         this.stock = amount;
+//        logger.info("The stock for item "+this+" has been set to: "+amount);
         return this;
     }
 

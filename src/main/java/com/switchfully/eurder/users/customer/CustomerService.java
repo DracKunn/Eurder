@@ -27,7 +27,7 @@ public class CustomerService {
         Customer newCustomer = this.customerMapper.customerDTOToCustomer(newCustomerDTO);
         checkIfCustomerAlreadyExits(newCustomer);
         this.userRepository.addNewCustomer(newCustomer);
-        logger.info("A new customer has been created: " + newCustomer);
+//        logger.info("A new customer has been created: " + newCustomer);
         return newCustomerDTO;
     }
 

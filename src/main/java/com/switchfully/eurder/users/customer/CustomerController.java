@@ -21,7 +21,7 @@ public class CustomerController {
     public CustomerDTO registerNewCustomer(@RequestBody CustomerDTO customerDTO) {
 
         logger.info("attempting to register a member");
-        String login = customerDTO.getEmail();
+        String login = customerDTO.email();
         logger.info("New customer with login: " + login + " registered.");
         return this.customerService.registerNewCustomer(customerDTO);
     }

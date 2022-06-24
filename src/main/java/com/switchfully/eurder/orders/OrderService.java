@@ -34,23 +34,27 @@ public class OrderService {
 
     public Order addItemsToNewOrder(String userName, String orderId, ItemDTO itemDTO, int amount) {
         Order order = new Order(getCustomerFromUserName(userName), orderId);
+        Customer customer = getCustomerFromUserName(userName);
         order.addItemToOrder(itemService.getItemFromDTO(itemDTO), amount);
         orderRepository.placeOrder(order);
-        logger.info("A new order with ID: " + orderId + " has been created. " + amount + " " + itemDTO.name() + " have been added.");
+        customer.addOrder(order);
+//        logger.info("A new order with ID: " + orderId + " has been created for customer: "+ userName +". " + amount + " " + itemDTO.name() + " have been added.");
         return order;
     }
 
     public Order addItemsToExistingOrder(String userName, String orderId, ItemDTO itemDTO, int amount) throws AccessDeniedException {
         Order order = orderRepository.getOrderwithID(orderId);
-        validateCustomerHasThisOrder(getCustomerFromUserName(userName), order);
+        Customer customer = getCustomerFromUserName(userName);
+        validateCustomerHasThisOrder(customer, order);
+
         String newItemName = itemDTO.name();
         if (itemIsAlreadyInOrder(order, newItemName)) {
             int newTotal = addAmountToOrderWithSameItem(order, newItemName, amount);
-            logger.info(amount + " " + itemDTO.name() + " have been added to your order with ID: " + orderId + ". The new total is: " + newTotal);
+//            logger.info(amount + " " + itemDTO.name() + " have been added to your order with ID: " + orderId + ". The new total is: " + newTotal);
             return orderRepository.getOrderwithID(orderId);
         }
         order.addItemToOrder(itemService.getItemFromDTO(itemDTO), amount);
-        logger.info(amount + " " + itemDTO.name() + " have been added to your order with ID: " + orderId + ".");
+//        logger.info(amount + " " + itemDTO.name() + " have been added to your order with ID: " + orderId + ".");
         return order;
     }
 
@@ -89,13 +93,21 @@ public class OrderService {
     }
 
     public List<OrderDTO> getAllOrdersForUser(String userName) {
-        return List.of();
+        Customer customer = getCustomerFromUserName(userName);
+        List<Order> customerOrders = customer.getAllOrders();
+        logger.info("all orders for customer: "+customerOrders);
+        return orderMapper.listOfOrdertoOrderDTOList(customer.getAllOrders());
     }
 
-    public OrderDTO getOrderDTOByOrderId(String userName, String orderId) throws AccessDeniedException {
+
+    public OrderDTO getOrderDTOByOrderId(String userName, String orderId) {
         Order order = orderRepository.getOrderwithID(orderId);
         Customer customer = getCustomerFromUserName(userName);
-        validateCustomerHasThisOrder(customer, order);
+        try {
+            validateCustomerHasThisOrder(customer, order);
+        } catch (AccessDeniedException exception) {
+            logger.warning("this customer has no access to this order");
+        }
         return orderMapper.orderToOrderDTO(order);
     }
 

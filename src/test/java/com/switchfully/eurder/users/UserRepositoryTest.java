@@ -1,5 +1,6 @@
 package com.switchfully.eurder.users;
 
+import com.switchfully.eurder.users.admin.Admin;
 import com.switchfully.eurder.users.customer.Customer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,8 +24,22 @@ class UserRepositoryTest {
         //when
         Customer actual = userRepository.addNewCustomer(customer);
         //then
-        Customer expected = (Customer) userRepository.getUserByUserName("bruenor@bardcollege.org");
+        Customer expected = userRepository.getCustomerByUserName("bruenor");
         assertEquals(expected,actual);
+    }
+
+    @Test
+    @DisplayName("given a user repository then admin is in repository")
+    void givendAUserRepositoryThenAdminIsInRepository() {
+
+ //given
+
+        UserRepository userRepository = new UserRepository();
+
+ //when
+ //then
+        assertEquals(new Admin("B-rex",new Name("Brecht", "Van Rie"), "brecht.vanrie@gmail.com"),userRepository.getAdminByUserName("B-rex"));
+
     }
 
 

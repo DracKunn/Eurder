@@ -20,7 +20,7 @@ public class ItemService {
     public ItemDTO addItem(ItemDTO itemDTO) {
         Item item = getItemFromDTO(itemDTO);
         itemRepository.addItem(item);
-        logger.info("The item " + item + " has been added.");
+//        logger.info("The item " + item + " has been added.");
         return itemDTO;
     }
 
@@ -28,7 +28,7 @@ public class ItemService {
         Item item = itemRepository.getItemByName(itemGroup.getSelectedItem().name());
         int amount = itemGroup.getAmount();
         removeAmountFormStock(item, amount);
-        logger.info(amount + " " + item.getName() + " have been removed from the stock. Current stock: " + item.getStock());
+//        logger.info(amount + " " + item.getName() + " have been removed from the stock. Current stock: " + item.getStock());
 
     }
 

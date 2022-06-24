@@ -5,6 +5,7 @@ import com.switchfully.eurder.users.customer.Customer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.switchfully.eurder.util.ValidatorsUtility.*;
 
@@ -25,8 +26,6 @@ public class Order {
         this.customer = customer;
         this.orderId = validateURLFriendly(orderId);
         this.orderedItems = new HashMap<>();
-
-
     }
 
     public Customer getCustomer() {
@@ -49,4 +48,16 @@ public class Order {
         orderedItems.put(item.getName(), new ItemGroup(item, amount));
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Order order)) return false;
+        return getCustomer().equals(order.getCustomer()) && getOrderId().equals(order.getOrderId()) && Objects.equals(getOrderedItems(), order.getOrderedItems());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCustomer(), getOrderId(), getOrderedItems());
+    }
 }

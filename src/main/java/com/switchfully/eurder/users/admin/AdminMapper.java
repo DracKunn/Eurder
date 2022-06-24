@@ -11,6 +11,6 @@ public class AdminMapper {
     }
 
     public Admin adminDTOToAdmin(AdminDTO adminDTO){
-        return new Admin(adminDTO.getUserName(),adminDTO.getName(),adminDTO.getEmail());
+        return new Admin(adminDTO.userName(),adminDTO.name(),adminDTO.email());
     }
 }

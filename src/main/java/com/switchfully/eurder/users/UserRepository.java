@@ -34,15 +34,15 @@ public class UserRepository {
     }
 
     public Customer addNewCustomer(Customer customer) {
-        userMap.put(customer.userName, customer);
+        userMap.put(customer.userName, (User) customer);
         customerMap.put(customer.userName, customer);
-        logger.info("User " + customer + " has been added.");
+//        logger.info("User " + customer + " has been added.");
         return customer;
     }
 
 
-    public User getUserByUserName(String userName) {
-        return userMap.get(userName);
+    public Admin getAdminByUserName(String userName) {
+        return (Admin) userMap.get(userName);
     }
 
     public Customer getCustomerByUserName(String userName){return customerMap.get(userName);}

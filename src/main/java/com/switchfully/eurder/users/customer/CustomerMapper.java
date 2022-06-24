@@ -7,16 +7,17 @@ import java.util.logging.Logger;
 
 @Component
 public class CustomerMapper {
-    private final java.util.logging.Logger logger = Logger.getLogger(this.getClass().getName());
+//    private final java.util.logging.Logger logger = Logger.getLogger(this.getClass().getName());
 
 
     public CustomerDTO customerToCustomerDTO(Customer customer){
-        logger.info("Customer transformed to DTO");
-        return new CustomerDTO(customer.getUserName(),customer.getName(), customer.getEmail(), customer.getAddress(), customer.getPhoneNumber());
+//        logger.info("Customer transformed to DTO");
+        return new CustomerDTO(customer.getUserName(),
+                customer.getName(), customer.getEmail(), customer.getAddress(), customer.getPhoneNumber(),customer.getAllOrders());
     }
 
     public Customer customerDTOToCustomer(CustomerDTO customerDTO){
-        logger.info("DTO transformed to Customer");
-        return new Customer(customerDTO.getUserName(),customerDTO.getName(),customerDTO.getEmail(),customerDTO.getAddress(),customerDTO.getPhoneNumber());
+//        logger.info("DTO transformed to Customer");
+        return new Customer(customerDTO.userName(),customerDTO.name(),customerDTO.email(),customerDTO.address(),customerDTO.phoneNumber(),customerDTO.orders());
     }
 }
