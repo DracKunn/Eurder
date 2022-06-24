@@ -13,18 +13,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerServiceTest {
-    static Address address = new Address("Volderstraat", 12, "9000", "Gent");
-    static Customer sarah = new Customer("sarah", new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
-    static Customer waldo = new Customer("waldo", new Name("Waldo", "Where"), "where.waldo@bing.com", address, "+3492583674");
-    static Customer henry = new Customer("henry", new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
+     Address address = new Address("Volderstraat", 12, "9000", "Gent");
+     Customer sarah = new Customer("sarah", new Name("Sarah", "Pout"), "sarah.pout@hotmail.com", address, "+32475693215");
+     Customer waldo = new Customer("waldo", new Name("Waldo", "Where"), "where.waldo@bing.com", address, "+3492583674");
+     Customer henry = new Customer("henry", new Name("Henry", "Oak"), "henry.oak@yahoo.com", address, "+19159969739");
 
-    static UserRepository userRepository;
-    static CustomerMapper customerMapper = new CustomerMapper();
-    static CustomerService customerService;
+     UserRepository userRepository;
+     CustomerMapper customerMapper = new CustomerMapper();
+     CustomerService customerService;
 
-    static CustomerDTO sarahDTO = customerMapper.customerToCustomerDTO(sarah);
-    static CustomerDTO waldoDTO = customerMapper.customerToCustomerDTO(waldo);
-    static CustomerDTO henryDTO = customerMapper.customerToCustomerDTO(henry);
+     CustomerDTO sarahDTO = customerMapper.customerToCustomerDTO(sarah);
+     CustomerDTO waldoDTO = customerMapper.customerToCustomerDTO(waldo);
+     CustomerDTO henryDTO = customerMapper.customerToCustomerDTO(henry);
 
     @BeforeEach
     void setUp() {

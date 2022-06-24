@@ -12,7 +12,7 @@ class UserRepositoryTest {
     void givenAUserAndAUserRepositoryWhenAddingUSerToRepositoryThenUserIsInRepository() {
 
         //given
-        String username = "Bruenor";
+        String username = "bruenor";
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         Address address = new Address("streetName", 666, "postalCode", "city");
