@@ -20,50 +20,56 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
-    static Item headphones = new Item("Headphones", "portable sound listening electronic device");
-
-    static Item apples = new Item("Apples", "Fruit, tart, juicy");
-    static Item bananas = new Item("Bananas", "Fruit, sweet, tasty");
-
-    static ItemMapper itemMapper = new ItemMapper();
-    static ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
-    static ItemDTO applesDTO = itemMapper.itemToItemDTO(apples);
-    static ItemDTO bananaDTO = itemMapper.itemToItemDTO(bananas);
-    static ItemRepository itemRepository = new ItemRepository();
-    static ItemService itemService = new ItemService(itemMapper, itemRepository);
+    Item headphones = new Item("Headphones", "portable sound listening electronic device");
+    Item apples = new Item("Apples", "Fruit, tart, juicy");
+    Item bananas = new Item("Bananas", "Fruit, sweet, tasty");
+    ItemMapper itemMapper = new ItemMapper();
+    ItemDTO headphonesDTO = itemMapper.itemToItemDTO(headphones);
+    ItemDTO applesDTO = itemMapper.itemToItemDTO(apples);
+    ItemDTO bananaDTO = itemMapper.itemToItemDTO(bananas);
+    ItemRepository itemRepository;
+    ItemService itemService;
 
     //given customer + customer service
-    static String userName = "bruenor";
-    static Name name = new Name("Bruenor", "The Bard");
-    static String email = "bruenor@bardcollege.org";
-    static Address address = new Address("streetName", 666, "postalCode", "city");
-    static String phoneNumber = "+32444555666";
-    static Customer customer = new Customer(userName, name, email, address, phoneNumber);
-
-    static UserRepository userRepository = new UserRepository();
-    static CustomerMapper customerMapper = new CustomerMapper();
-    static CustomerService customerService = new CustomerService(customerMapper, userRepository);
+    String userName = "bruenor";
+    Name name = new Name("Bruenor", "The Bard");
+    String email = "bruenor@bardcollege.org";
+    Address address = new Address("streetName", 666, "postalCode", "city");
+    String phoneNumber = "+32444555666";
+    Customer customer = new Customer(userName, name, email, address, phoneNumber);
+    UserRepository userRepository;
+    CustomerMapper customerMapper = new CustomerMapper();
+    CustomerService customerService;
 
     //order items in 2 orders
-    static String headphonesOrderId = "headphones";
-    static String fruitOrderId = "fruit";
-    static OrderMapper orderMapper = new OrderMapper();
-    static OrderRepository orderRepository = new OrderRepository();
-    static OrderService orderService = new OrderService(orderMapper, orderRepository, itemService, customerService);
+    String headphonesOrderId = "headphones";
+    String fruitOrderId = "fruit";
+    OrderMapper orderMapper = new OrderMapper();
+    OrderRepository orderRepository;
+    OrderService orderService;
 
 
     @BeforeEach
-    static void setUp() {
+    void setUp() {
         //given items into warehouse
         headphones.setPrice(75.99).setStock(20);
         apples.setPrice(0.50).setStock(100);
         bananas.setPrice(1).setStock(60);
 
+        itemRepository = new ItemRepository();
+        itemService = new ItemService(itemMapper, itemRepository);
+
         itemService.addItem(headphonesDTO);
         itemService.addItem(applesDTO);
         itemService.addItem(bananaDTO);
 
+        userRepository = new UserRepository();
+        customerService = new CustomerService(customerMapper, userRepository);
+
         userRepository.addNewCustomer(customer);
+
+        orderRepository = new OrderRepository();
+        orderService = new OrderService(orderMapper, orderRepository, itemService, customerService);
 
 
     }
