@@ -1,5 +1,6 @@
 package com.switchfully.eurder.user.service.customer;
 
+import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.user.domain.User;
 import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
@@ -23,13 +24,13 @@ public class CustomerService {
     public CustomerMapper customerMapper;
     private UserRepository userRepository;
 
-    public CustomerDTO registerNewCustomer(CustomerDTO newCustomerDTO) throws IllegalArgumentException {
+    public CustomerDTO registerNewCustomer(CreateCustomerDTO newCustomerDTO) throws IllegalArgumentException {
         isNotNull(newCustomerDTO, "new customer DTO");
         Customer newCustomer = this.customerMapper.toEntity(newCustomerDTO);
         checkIfCustomerAlreadyExits(newCustomer);
         this.userRepository.save(newCustomer);
         customerServiceLogger.info("A new customer has been created: " + newCustomer);
-        return newCustomerDTO;
+        return customerMapper.toDTO(newCustomer);
     }
 
     private void checkIfCustomerAlreadyExits(Customer newCustomer) {

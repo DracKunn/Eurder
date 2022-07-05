@@ -44,6 +44,7 @@ public class ItemService {
         } else {
             item.setStock(stock - amount);
         }
+        itemRepository.save(item);
     }
 
     @NotNull
@@ -60,4 +61,7 @@ public class ItemService {
         return itemMapper.toDTO(getItemById(itemId));
     }
 
+    public setStockForItem(Item item, int stock){
+
+    }
 }

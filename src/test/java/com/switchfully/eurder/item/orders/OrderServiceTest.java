@@ -1,6 +1,6 @@
 package com.switchfully.eurder.item.orders;
 
-import com.switchfully.eurder.item.api.dto.ItemDTO;
+import com.switchfully.eurder.item.api.dto.CreateItemDTO;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
 import com.switchfully.eurder.item.service.ItemMapper;
@@ -8,17 +8,24 @@ import com.switchfully.eurder.item.service.ItemService;
 import com.switchfully.eurder.order.api.dto.order.OrderDTO;
 import com.switchfully.eurder.order.domain.order.Order;
 import com.switchfully.eurder.order.domain.order.OrderRepository;
+import com.switchfully.eurder.order.service.itemgroup.ItemGroupMapper;
 import com.switchfully.eurder.order.service.order.OrderMapper;
 import com.switchfully.eurder.order.service.order.OrderService;
+import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
+import com.switchfully.eurder.util.address.api.dto.AddressDTO;
 import com.switchfully.eurder.util.address.domain.Address;
+import com.switchfully.eurder.util.address.service.AddressMapper;
+import com.switchfully.eurder.util.name.api.dto.NameDTO;
 import com.switchfully.eurder.util.name.domain.Name;
 import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.domain.customer.Customer;
 import com.switchfully.eurder.user.service.customer.CustomerMapper;
 import com.switchfully.eurder.user.service.customer.CustomerService;
+import com.switchfully.eurder.util.name.service.NameMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
@@ -27,31 +34,53 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OrderServiceTest {
-    Item headphones = new Item("Headphones", "portable sound listening electronic device");
-    Item apples = new Item("Apples", "Fruit, tart, juicy");
-    Item bananas = new Item("Bananas", "Fruit, sweet, tasty");
+    Item headphones = new Item(
+            "Headphones",
+            "portable sound listening electronic device");
+    Item apples = new Item(
+            "Apples",
+            "Fruit, tart, juicy");
+    Item bananas = new Item(
+            "Bananas",
+            "Fruit, sweet, tasty");
     ItemMapper itemMapper = new ItemMapper();
-    ItemDTO headphonesDTO;
-    ItemDTO applesDTO;
-    ItemDTO bananaDTO;
+    CreateItemDTO createHeadphonesDTO;
+    CreateItemDTO createApplesDTO;
+    CreateItemDTO createBananaDTO;
     ItemRepository itemRepository;
     ItemService itemService;
 
     //given customer + customer service
     String userName = "bruenor";
     Name name = new Name("Bruenor", "The Bard");
+    NameMapper nameMapper = new NameMapper();
+    NameDTO nameDTO = nameMapper.toDTO(name);
     String email = "bruenor@bardcollege.org";
-    Address address = new Address("streetName", 666, "postalCode", "city");
+    Address address = new Address(
+            "streetName",
+            666,
+            "postalCode",
+            "city"
+    );
+    AddressMapper addressMapper = new AddressMapper();
+    AddressDTO addressDTO = addressMapper.toDTO(address);
     String phoneNumber = "+32444555666";
-    Customer customer = new Customer(userName, name, email, address, phoneNumber);
+    CreateCustomerDTO createCustomerDTO = new CreateCustomerDTO(
+            userName,
+            nameDTO,
+            email,
+            addressDTO,
+            phoneNumber
+    );
     UserRepository userRepository;
-    CustomerMapper customerMapper = new CustomerMapper();
+    CustomerMapper customerMapper = new CustomerMapper(nameMapper, addressMapper);
     CustomerService customerService;
 
     //order items in 2 orders
     String headphonesOrderId = "headphones";
     String fruitOrderId = "fruit";
-    OrderMapper orderMapper = new OrderMapper();
+    ItemGroupMapper itemGroupMapper = new ItemGroupMapper(itemMapper);
+    OrderMapper orderMapper = new OrderMapper(customerMapper, itemGroupMapper);
     OrderRepository orderRepository;
     OrderService orderService;
 
@@ -59,28 +88,44 @@ class OrderServiceTest {
     @BeforeEach
     void setUp() {
         //given items into warehouse
-        headphones.setPrice(75.99).setStock(20);
-        apples.setPrice(0.50).setStock(100);
-        bananas.setPrice(1).setStock(60);
+        createHeadphonesDTO = new CreateItemDTO(
+                "Headphones",
+                "portable sound listening electronic device",
+                75.99,
+                20);
+        createApplesDTO = new CreateItemDTO(
+                "Apples",
+                "Fruit, tart, juicy",
+                0.50,
+                100);
+        createBananaDTO = new CreateItemDTO(
+                "Bananas",
+                "Fruit, sweet, tasty",
+                1,
+                60);
 
-        headphonesDTO = itemMapper.toDTO(headphones);
-        applesDTO = itemMapper.toDTO(apples);
-        bananaDTO = itemMapper.toDTO(bananas);
-
-        itemRepository = new ItemRepository();
+        itemRepository = Mockito.mock(ItemRepository.class);
         itemService = new ItemService(itemMapper, itemRepository);
 
-        itemService.addItem(headphonesDTO);
-        itemService.addItem(applesDTO);
-        itemService.addItem(bananaDTO);
+        itemService.addItem(createHeadphonesDTO);
+        itemService.addItem(createApplesDTO);
+        itemService.addItem(createBananaDTO);
 
-        userRepository = new UserRepository();
+        userRepository = Mockito.mock(UserRepository.class);
         customerService = new CustomerService(customerMapper, userRepository);
 
-        userRepository.addNewCustomer(customer);
+        customerService.registerNewCustomer(createCustomerDTO);
 
-        orderRepository = new OrderRepository();
-        orderService = new OrderService(orderMapper, orderRepository, itemService, customerService);
+        orderRepository = Mockito.mock(OrderRepository.class);
+        orderService = new OrderService(
+                itemMapper,
+                customerMapper,
+                itemGroupMapper,
+                orderMapper,
+                itemService,
+                customerService,
+                orderRepository
+        );
 
 
     }
@@ -159,7 +204,7 @@ class OrderServiceTest {
     void givenAnItemWithAStockAndAWebshopWhenWeOrderMoreThanTheCurrentStockTheStockIsZero() throws AccessDeniedException {
 
         //given
-int stockBefore = headphones.getStock();
+        int stockBefore = headphones.getStock();
         //when
         String orderId = "Buying-3-pairs-of-Headphones";
         Order order = orderService.addItemsToNewOrder(userName, orderId, headphonesDTO, 3);
@@ -170,7 +215,7 @@ int stockBefore = headphones.getStock();
         int actual = itemRepository.getItemByName(itemName).getStock();
         //then
 
-        assertEquals(stockBefore-3, actual);
+        assertEquals(stockBefore - 3, actual);
     }
 
     @Test

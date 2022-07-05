@@ -34,14 +34,8 @@ public class ValidatorsUtility {
         }
     }
 
-    public static void isNotNull(CustomerDTO customerDTOToValidate, String variableFieldName) {
-        if (customerDTOToValidate == null) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
-        }
-    }
-
-    public static void isNotNull(Customer customerToValidate, String variableFieldName) {
-        if (customerToValidate == null) {
+    public static void isNotNull(Object objectToValidate, String variableFieldName) {
+        if (objectToValidate == null) {
             throw new IllegalArgumentException(variableFieldName + " cannot be empty");
         }
     }
@@ -92,19 +86,20 @@ public class ValidatorsUtility {
     }
 
     public static void validateCustomerHasThisOrder(Customer customer, Order order) throws AccessDeniedException {
-        if (!order.getCustomer().equals(customer)){
+        if (!order.getCustomer().equals(customer)) {
             throw new AccessDeniedException("this user cannot view this order");
         }
     }
 
-    public static int isNotNegative(int integerNumber, String integerName){
-        if (integerNumber <0){
+    public static int isNotNegative(int integerNumber, String integerName) {
+        if (integerNumber < 0) {
             throw new IllegalArgumentException(integerName + " cannot be negative");
         }
         return integerNumber;
     }
-    public static double isNotNegative(double doubleNumber, String doubleName){
-        if (doubleNumber <0){
+
+    public static double isNotNegative(double doubleNumber, String doubleName) {
+        if (doubleNumber < 0) {
             throw new IllegalArgumentException(doubleName + " cannot be negative");
         }
         return doubleNumber;

@@ -30,13 +30,13 @@ import static com.switchfully.eurder.util.validation.ValidatorsUtility.validateC
 public class OrderService {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    OrderMapper orderMapper;
     ItemMapper itemMapper;
-    ItemGroupMapper itemGroupMapper;
     CustomerMapper customerMapper;
-    OrderRepository orderRepository;
+    ItemGroupMapper itemGroupMapper;
+    OrderMapper orderMapper;
     ItemService itemService;
     CustomerService customerService;
+    OrderRepository orderRepository;
 
 
     public OrderDTO addItemsToNewOrder(CreateOrderDTO createOrderDTO) {
