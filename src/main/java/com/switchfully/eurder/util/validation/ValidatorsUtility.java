@@ -1,10 +1,10 @@
 package com.switchfully.eurder.util.validation;
 
-import com.switchfully.eurder.orders.domain.Order;
-import com.switchfully.eurder.util.address.Address;
-import com.switchfully.eurder.util.name.Name;
-import com.switchfully.eurder.users.customer.domain.Customer;
-import com.switchfully.eurder.users.customer.api.dto.CustomerDTO;
+import com.switchfully.eurder.order.domain.order.Order;
+import com.switchfully.eurder.util.address.domain.Address;
+import com.switchfully.eurder.util.name.domain.Name;
+import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
 
 import java.nio.file.AccessDeniedException;
 import java.util.regex.Matcher;

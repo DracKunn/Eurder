@@ -1,12 +1,12 @@
 package com.switchfully.eurder.users.customer;
 
-import com.switchfully.eurder.util.address.Address;
-import com.switchfully.eurder.util.name.Name;
-import com.switchfully.eurder.users.user.domain.UserRepository;
-import com.switchfully.eurder.users.customer.api.dto.CustomerDTO;
-import com.switchfully.eurder.users.customer.domain.Customer;
-import com.switchfully.eurder.users.customer.service.CustomerMapper;
-import com.switchfully.eurder.users.customer.service.CustomerService;
+import com.switchfully.eurder.util.address.domain.Address;
+import com.switchfully.eurder.util.name.domain.Name;
+import com.switchfully.eurder.user.domain.UserRepository;
+import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
+import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.service.customer.CustomerMapper;
+import com.switchfully.eurder.user.service.customer.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,9 +25,9 @@ class CustomerServiceTest {
      CustomerMapper customerMapper = new CustomerMapper();
      CustomerService customerService;
 
-     CustomerDTO sarahDTO = customerMapper.customerToCustomerDTO(sarah);
-     CustomerDTO waldoDTO = customerMapper.customerToCustomerDTO(waldo);
-     CustomerDTO henryDTO = customerMapper.customerToCustomerDTO(henry);
+     CustomerDTO sarahDTO = customerMapper.toDTO(sarah);
+     CustomerDTO waldoDTO = customerMapper.toDTO(waldo);
+     CustomerDTO henryDTO = customerMapper.toDTO(henry);
 
     @BeforeEach
     void setUp() {
