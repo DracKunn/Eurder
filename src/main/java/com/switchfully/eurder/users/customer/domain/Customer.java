@@ -15,14 +15,16 @@ import static com.switchfully.eurder.util.validation.ValidatorsUtility.*;
 @Entity
 @Table
 public class Customer extends User {
-    @Transient
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    @Id
+    private int customerId;
     @JoinColumn
     private final Address address;
     @Column
     private final String phoneNumber;
-
+    @OneToMany
+    @JoinColumn
     private final List<Order> orders;
+
 
     public Customer(String useName,Name name, String email, Address address, String phoneNumber) {
         super(useName,name, email);

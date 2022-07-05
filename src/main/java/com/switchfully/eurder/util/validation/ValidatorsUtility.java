@@ -67,7 +67,7 @@ public class ValidatorsUtility {
     }
 
     public static Name validateName(Name name) throws IllegalArgumentException {
-        areNotNullOrEmpty(name.firstName(), name.lastName());
+        areNotNullOrEmpty(name.getFirstName(), name.getLastName());
         return name;
     }
 
@@ -84,8 +84,8 @@ public class ValidatorsUtility {
     }
 
     public static Address validateAddress(Address address) throws IllegalArgumentException {
-        areNotNullOrEmpty(address.streetName(), address.postalCode(), address.city());
-        if (address.streetNumber() <= 0) {
+        areNotNullOrEmpty(address.getStreetName(), address.getPostalCode(), address.getCity());
+        if (address.getStreetNumber() <= 0) {
             throw new IllegalArgumentException("street number must be greater than 0");
         }
         return address;

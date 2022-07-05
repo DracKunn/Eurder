@@ -2,12 +2,17 @@ package com.switchfully.eurder.users.user.domain;
 
 
 import com.switchfully.eurder.util.name.Name;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 import static com.switchfully.eurder.util.validation.ValidatorsUtility.*;
 @MappedSuperclass
+@Table
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")

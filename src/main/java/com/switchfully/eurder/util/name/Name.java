@@ -1,7 +1,9 @@
 package com.switchfully.eurder.util.name;
 
-import java.util.Objects;
+import lombok.Getter;
 
+import java.util.Objects;
+@Getter
 public final class Name {
     private final String firstName;
     private final String lastName;
@@ -16,13 +18,7 @@ public final class Name {
         return firstName + " " + lastName;
     }
 
-    public String firstName() {
-        return firstName;
-    }
 
-    public String lastName() {
-        return lastName;
-    }
 
     @Override
     public boolean equals(Object obj) {

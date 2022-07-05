@@ -1,13 +1,32 @@
 package com.switchfully.eurder.util.address;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
+import javax.persistence.*;
 import java.util.Objects;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Entity
+@Table
 public final class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_sequence")
+    @SequenceGenerator(name = "address_sequence", sequenceName = "address_id_seq", allocationSize = 1)
     private int id;
-    private final String streetName;
-    private final int streetNumber;
-    private final String postalCode;
-    private final String city;
+    @Column
+    private String streetName;
+    @Column
+    private int streetNumber;
+    @Column
+    private String postalCode;
+    @Column
+    private String city;
 
     public Address(String streetName, int streetNumber, String postalCode, String city) {
         this.streetName = streetName;
@@ -21,21 +40,6 @@ public final class Address {
         return streetName + " " + streetNumber + ", " + postalCode + " " + city;
     }
 
-    public String streetName() {
-        return streetName;
-    }
-
-    public int streetNumber() {
-        return streetNumber;
-    }
-
-    public String postalCode() {
-        return postalCode;
-    }
-
-    public String city() {
-        return city;
-    }
 
     @Override
     public boolean equals(Object obj) {
