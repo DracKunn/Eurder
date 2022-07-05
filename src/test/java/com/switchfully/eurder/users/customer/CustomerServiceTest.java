@@ -1,9 +1,12 @@
 package com.switchfully.eurder.users.customer;
 
-import com.switchfully.eurder.users.Address;
-import com.switchfully.eurder.users.Name;
-import com.switchfully.eurder.users.UserRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.switchfully.eurder.util.address.Address;
+import com.switchfully.eurder.util.name.Name;
+import com.switchfully.eurder.users.user.domain.UserRepository;
+import com.switchfully.eurder.users.customer.api.dto.CustomerDTO;
+import com.switchfully.eurder.users.customer.domain.Customer;
+import com.switchfully.eurder.users.customer.service.CustomerMapper;
+import com.switchfully.eurder.users.customer.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

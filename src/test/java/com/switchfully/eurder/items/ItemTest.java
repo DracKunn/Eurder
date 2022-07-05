@@ -1,6 +1,6 @@
 package com.switchfully.eurder.items;
 
-import com.switchfully.eurder.users.customer.Customer;
+import com.switchfully.eurder.items.domain.Item;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,6 +1,7 @@
 package com.switchfully.eurder.users.admin;
 
-import com.switchfully.eurder.users.Name;
+import com.switchfully.eurder.util.name.Name;
+import com.switchfully.eurder.users.admin.domain.Admin;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

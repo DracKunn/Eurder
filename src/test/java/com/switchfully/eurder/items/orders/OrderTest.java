@@ -1,10 +1,10 @@
 package com.switchfully.eurder.items.orders;
 
-import com.switchfully.eurder.items.Item;
-import com.switchfully.eurder.orders.Order;
-import com.switchfully.eurder.users.Address;
-import com.switchfully.eurder.users.Name;
-import com.switchfully.eurder.users.customer.Customer;
+import com.switchfully.eurder.items.domain.Item;
+import com.switchfully.eurder.orders.domain.Order;
+import com.switchfully.eurder.util.address.Address;
+import com.switchfully.eurder.util.name.Name;
+import com.switchfully.eurder.users.customer.domain.Customer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

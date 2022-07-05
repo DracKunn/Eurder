@@ -1,7 +1,10 @@
 package com.switchfully.eurder.users;
 
-import com.switchfully.eurder.users.admin.Admin;
-import com.switchfully.eurder.users.customer.Customer;
+import com.switchfully.eurder.users.admin.domain.Admin;
+import com.switchfully.eurder.users.user.domain.UserRepository;
+import com.switchfully.eurder.users.customer.domain.Customer;
+import com.switchfully.eurder.util.address.Address;
+import com.switchfully.eurder.util.name.Name;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
