@@ -1,8 +1,11 @@
 package com.switchfully.eurder.users.customer;
 
+import com.switchfully.eurder.user.domain.Role;
+import com.switchfully.eurder.user.domain.User;
 import com.switchfully.eurder.util.address.domain.Address;
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.Customer;
+import org.checkerframework.checker.units.qual.C;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,11 +22,17 @@ class CustomerTest {
     Address address = new Address("streetName", 666, "postalCode", "city");
     String phoneNumber = "+32444555666";
 
+    User customer;
+
+    @BeforeEach
+    void setUp(){
+       customer = new User(userName, name, email, address, phoneNumber,Role.CUSTOMER);
+    }
+
     @Test
     @DisplayName("given a user with an email adress when email is valid then return email")
     void givenAUserWithAnEmailAdress_whenEmailIsValid_thenReturnEmail() {
         //given
-        Customer customer = new Customer(userName, name, email, address, phoneNumber);
         //When
         String actual = customer.getEmail();
         //then
@@ -41,7 +50,7 @@ class CustomerTest {
         //When
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber, Role.CUSTOMER));
     }
 
     @ParameterizedTest
@@ -51,14 +60,14 @@ class CustomerTest {
 
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, testEmail, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, testEmail, address, phoneNumber,Role.CUSTOMER));
     }
 
     @Test
     @DisplayName("given a user when getName then return name ")
     void givenAUserWhenGetNameThenReturnName() {
         //given
-        Customer customer = new Customer(userName, name, email, address, phoneNumber);
+
 
         //when
         String actual = customer.getName().toString();
@@ -85,7 +94,7 @@ class CustomerTest {
         Name name = new Name(testName, lastName);
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
     }
 
     @ParameterizedTest
@@ -97,7 +106,7 @@ class CustomerTest {
         Name name = new Name(firstName, testName);
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
     }
 
     @Test
@@ -105,7 +114,6 @@ class CustomerTest {
     void givenAUserWithACorrectPhoneNumberWhenCheckingNumberThenNoExceptionIsThrown() {
 
         //given
-        Customer customer = new Customer(userName, name, email, address, phoneNumber);
         //when
         String actual = customer.getPhoneNumber();
         //then
@@ -123,7 +131,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
     }
 
     @ParameterizedTest
@@ -133,7 +141,7 @@ class CustomerTest {
 
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, badNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, badNumber,Role.CUSTOMER));
     }
 
     @Test
@@ -141,7 +149,6 @@ class CustomerTest {
     void givenACorrectAddressWhenCreatingCustomerThenNoExceptionIsThrown() {
 
         //when
-        Customer customer = new Customer(userName, name, email, address, phoneNumber);
         String actual = customer.getAddress().toString();
 
         //then
@@ -158,7 +165,7 @@ class CustomerTest {
         Address address = new Address(badStreetName, 666, "postalCode", "city");
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
 
     }
 
@@ -171,7 +178,7 @@ class CustomerTest {
         Address address = new Address("streetName", 666, badPostalCode, "city");
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
 
     }
 
@@ -185,7 +192,7 @@ class CustomerTest {
         //when
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(userName, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
 
     }
 
@@ -194,9 +201,9 @@ class CustomerTest {
     void givenABadUsernameWhenCreatingAUserThenThrowException() {
 
         //given
-        String username = "Bruenor the terrible url";
+        userName = "Bruenor the terrible url";
         //when /then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(username, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(userName, name, email, address, phoneNumber,Role.CUSTOMER));
     }
 
     @ParameterizedTest
@@ -206,7 +213,7 @@ class CustomerTest {
 
 
         //then
-        assertThrows(IllegalArgumentException.class, () -> new Customer(badUsername, name, email, address, phoneNumber));
+        assertThrows(IllegalArgumentException.class, () -> new User(badUsername, name, email, address, phoneNumber,Role.CUSTOMER));
     }
 
 
