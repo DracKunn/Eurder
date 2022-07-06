@@ -1,7 +1,9 @@
 package com.switchfully.eurder.user.api.customer;
 
+import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
 import com.switchfully.eurder.user.service.customer.CustomerService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,32 +12,29 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("customers")
+@AllArgsConstructor
 public class CustomerController {
-    private final java.util.logging.Logger logger = Logger.getLogger(this.getClass().getName());
-    CustomerService customerService;
+    private final java.util.logging.Logger customerControllerLogger = Logger.getLogger(this.getClass().getName());
+    private CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
-    }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDTO registerNewCustomer(@RequestBody CustomerDTO customerDTO) {
+    public CustomerDTO registerNewCustomer(@RequestBody CreateCustomerDTO createCustomerDTO) {
 
-        logger.info("attempting to register a member");
-        String login = customerDTO.email();
-        logger.info("New customer with login: " + login + " registered.");
-        return this.customerService.registerNewCustomer(customerDTO);
+        String login = createCustomerDTO.email();
+        customerControllerLogger.info("New customer with login: " + login + " registered.");
+        return this.customerService.registerNewCustomer(createCustomerDTO);
     }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerDTO> viewAllCustomers() {
-        logger.info("Displaying all known customers: ");
+        customerControllerLogger.info("Displaying all known customers: ");
         return this.customerService.viewAllCustomers();
     }
 
-    @GetMapping(path = "/{userid}", produces = "application/json")
+    @GetMapping(path = "/{userId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public CustomerDTO viewCustomer(@PathVariable int userId){
         return this.customerService.getCustomerDTOById(userId);

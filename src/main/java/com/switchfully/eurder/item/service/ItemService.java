@@ -61,7 +61,10 @@ public class ItemService {
         return itemMapper.toDTO(getItemById(itemId));
     }
 
-    public setStockForItem(Item item, int stock){
-
+    public void setStockForItem(Item item, int stock){
+        String settingStockMessage ="Setting stock for "+item+ " to amount: " + stock;
+    itemLogger.info(settingStockMessage);
+    item.setStock(stock);
+    itemRepository.save(item);
     }
 }
