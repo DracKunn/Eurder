@@ -16,6 +16,8 @@ public class ItemGroup {
     private static final int WEEKS_TO_ADD = 1;
     private static final int DAYS_TO_ADD = 1;
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemgroup_sequence")
+    @SequenceGenerator(name = "itemgroup_sequence", sequenceName = "itemgroup_id_seq", allocationSize = 1)
     private int id;
     @JoinColumn
     @ManyToOne

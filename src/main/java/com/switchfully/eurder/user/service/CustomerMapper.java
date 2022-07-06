@@ -1,8 +1,8 @@
-package com.switchfully.eurder.user.service.customer;
+package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.domain.Customer;
 import com.switchfully.eurder.util.address.service.AddressMapper;
 import com.switchfully.eurder.util.name.service.NameMapper;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class CustomerMapper {
                 createCustomerDTO.userName(),
                 nameMapper.toEntity(createCustomerDTO.nameDTO()),
                 createCustomerDTO.email(),
-                addressMapper.toEntity(createCustomerDTO.addressDTO()),
+                addressMapper.toEntity(createCustomerDTO.createAddressDTO()),
                 createCustomerDTO.phoneNumber()
         );
     }

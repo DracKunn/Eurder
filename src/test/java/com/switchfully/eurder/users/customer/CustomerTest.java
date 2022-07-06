@@ -2,7 +2,7 @@ package com.switchfully.eurder.users.customer;
 
 import com.switchfully.eurder.util.address.domain.Address;
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.domain.Customer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

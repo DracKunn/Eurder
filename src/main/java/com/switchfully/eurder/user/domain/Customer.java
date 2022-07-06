@@ -1,8 +1,7 @@
-package com.switchfully.eurder.user.domain.customer;
+package com.switchfully.eurder.user.domain;
 
 import com.switchfully.eurder.util.address.domain.Address;
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.util.Objects;
 
 import static com.switchfully.eurder.util.validation.ValidatorsUtility.*;
 @Entity
-@Table
+@DiscriminatorValue("2")
 @NoArgsConstructor
 @Getter
 public class Customer extends User {

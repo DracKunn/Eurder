@@ -1,12 +1,11 @@
 package com.switchfully.eurder.order.service.order;
 
 import com.switchfully.eurder.order.api.dto.itemgroup.ItemGroupDTO;
-import com.switchfully.eurder.order.api.dto.order.CreateOrderDTO;
 import com.switchfully.eurder.order.api.dto.order.OrderDTO;
 import com.switchfully.eurder.order.domain.order.Order;
 import com.switchfully.eurder.order.service.itemgroup.ItemGroupMapper;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.service.customer.CustomerMapper;
+import com.switchfully.eurder.user.service.CustomerMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

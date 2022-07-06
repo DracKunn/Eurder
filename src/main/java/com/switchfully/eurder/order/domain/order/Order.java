@@ -2,7 +2,7 @@ package com.switchfully.eurder.order.domain.order;
 
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.order.domain.itemgroup.ItemGroup;
-import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.domain.Customer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

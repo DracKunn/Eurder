@@ -1,8 +1,8 @@
-package com.switchfully.eurder.user.api.customer;
+package com.switchfully.eurder.user.api;
 
 import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.service.customer.CustomerService;
+import com.switchfully.eurder.user.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

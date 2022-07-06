@@ -1,9 +1,8 @@
-package com.switchfully.eurder.user.service.admin;
+package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.api.dto.admin.AdminDTO;
 import com.switchfully.eurder.user.api.dto.admin.CreateAdminDTO;
-import com.switchfully.eurder.user.domain.admin.Admin;
-import com.switchfully.eurder.util.address.service.AddressMapper;
+import com.switchfully.eurder.user.domain.Admin;
 import com.switchfully.eurder.util.name.service.NameMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

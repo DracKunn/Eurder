@@ -1,10 +1,9 @@
-package com.switchfully.eurder.user.service.customer;
+package com.switchfully.eurder.user.service;
 
 import com.switchfully.eurder.user.api.dto.customer.CreateCustomerDTO;
-import com.switchfully.eurder.user.domain.User;
 import com.switchfully.eurder.user.domain.UserRepository;
 import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.domain.customer.Customer;
+import com.switchfully.eurder.user.domain.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ import static com.switchfully.eurder.util.validation.ValidatorsUtility.isNotNull
 public class CustomerService {
     private final Logger customerServiceLogger = Logger.getLogger(this.getClass().getName());
 
-    public CustomerMapper customerMapper;
+    private CustomerMapper customerMapper;
     private UserRepository userRepository;
 
     public CustomerDTO registerNewCustomer(CreateCustomerDTO newCustomerDTO) throws IllegalArgumentException {

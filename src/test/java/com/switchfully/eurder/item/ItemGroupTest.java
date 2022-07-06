@@ -56,7 +56,7 @@ class ItemGroupTest {
         candyCanes.setPrice(2.00);
 
         //then
-        double actual = candyCaneGroup.getSelectedItem().price();
+        double actual = candyCaneGroup.getPriceAtTimeOfOrder();
         double expected = 0.05;
         assertEquals(expected,actual);
 

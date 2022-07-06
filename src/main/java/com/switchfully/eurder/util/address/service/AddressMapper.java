@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AddressMapper {
-    public Address toEntity(@NotNull CreateAddressDTO createAddressDTO) {
+    public Address toEntity(CreateAddressDTO createAddressDTO) {
         return new Address(createAddressDTO.streetName(), createAddressDTO.streetNumber(), createAddressDTO.postalCode(), createAddressDTO.city());
     }
 
-    public Address toEntity(@NotNull AddressDTO addressDTO) {
+    public Address toEntity(AddressDTO addressDTO) {
         return new Address(addressDTO.id(),addressDTO.streetName(), addressDTO.streetNumber(), addressDTO.postalCode(), addressDTO.city());
     }
 

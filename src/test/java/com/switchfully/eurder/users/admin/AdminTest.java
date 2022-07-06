@@ -1,7 +1,7 @@
 package com.switchfully.eurder.users.admin;
 
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.admin.Admin;
+import com.switchfully.eurder.user.domain.Admin;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class AdminTest {
         Name name = new Name("Bruenor", "The Bard");
         String email = "bruenor@bardcollege.org";
         //when /then
-        assertThrows(IllegalArgumentException.class, ()-> new Admin(username,name, email));
+        assertThrows(IllegalArgumentException.class, () -> new Admin(username, name, email));
     }
 
 }

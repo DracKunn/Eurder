@@ -3,14 +3,16 @@ package com.switchfully.eurder.util.validation;
 import com.switchfully.eurder.order.domain.order.Order;
 import com.switchfully.eurder.util.address.domain.Address;
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.customer.Customer;
-import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
+import com.switchfully.eurder.user.domain.Customer;
 
 import java.nio.file.AccessDeniedException;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidatorsUtility {
+    public static final Logger validatorLogger = Logger.getLogger(ValidatorsUtility.class.getName());
+
     public static final String LEGAL_URL_ADDRESS_CHARACTERS = "^(?!-)[A-Za-z0-9-]{1,63}(?<!-)$";
     public static final String OWASP_EMAIL_VALIDATION = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
 
@@ -22,21 +24,27 @@ public class ValidatorsUtility {
 
     public static void isNotNullOrEmpty(String stringToValidate, String variableFieldName) {
         if (stringToValidate == null || stringToValidate.isBlank()) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
+            String errorMessage = variableFieldName + " cannot be empty";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
     public static void areNotNullOrEmpty(String... stringsToValidate) {
         for (String stringToValidate : stringsToValidate) {
             if (stringToValidate == null || stringToValidate.isBlank()) {
-                throw new IllegalArgumentException("field cannot be empty");
+                String errorMessage = "field cannot be empty";
+                validatorLogger.warning(errorMessage);
+                throw new IllegalArgumentException(errorMessage);
             }
         }
     }
 
     public static void isNotNull(Object objectToValidate, String variableFieldName) {
         if (objectToValidate == null) {
-            throw new IllegalArgumentException(variableFieldName + " cannot be empty");
+            String errorMessage = variableFieldName + " cannot be empty";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 
@@ -45,7 +53,9 @@ public class ValidatorsUtility {
         Pattern pattern = Pattern.compile(LEGAL_URL_ADDRESS_CHARACTERS);
         Matcher matcher = pattern.matcher(string);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("field cannot contain a space or URL unfriendly characters.");
+            String errorMessage = "field cannot contain a space or URL unfriendly characters.";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return string;
     }
@@ -55,7 +65,9 @@ public class ValidatorsUtility {
         Pattern pattern = Pattern.compile(OWASP_EMAIL_VALIDATION);
         Matcher matcher = pattern.matcher(email);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("invalid e-mail format");
+            String errorMessage = "invalid e-mail format";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return email;
     }
@@ -72,7 +84,9 @@ public class ValidatorsUtility {
         Pattern pattern = Pattern.compile(OWASP_PHONE_VALIDATION);
         Matcher matcher = pattern.matcher(phoneNumber);
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("Invalid phone-number format");
+            String errorMessage = "Invalid phone-number format";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return phoneNumber;
     }
@@ -80,27 +94,35 @@ public class ValidatorsUtility {
     public static Address validateAddress(Address address) throws IllegalArgumentException {
         areNotNullOrEmpty(address.getStreetName(), address.getPostalCode(), address.getCity());
         if (address.getStreetNumber() <= 0) {
-            throw new IllegalArgumentException("street number must be greater than 0");
+            String errorMessage = "street number must be greater than 0";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return address;
     }
 
     public static void validateCustomerHasThisOrder(Customer customer, Order order) throws AccessDeniedException {
         if (!order.getCustomer().equals(customer)) {
-            throw new AccessDeniedException("this user cannot view this order");
+            String errorMessage = "this user cannot view this order";
+            validatorLogger.warning(errorMessage);
+            throw new AccessDeniedException(errorMessage);
         }
     }
 
     public static int isNotNegative(int integerNumber, String integerName) {
         if (integerNumber < 0) {
-            throw new IllegalArgumentException(integerName + " cannot be negative");
+            String errorMessage = integerName + " cannot be negative";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return integerNumber;
     }
 
     public static double isNotNegative(double doubleNumber, String doubleName) {
         if (doubleNumber < 0) {
-            throw new IllegalArgumentException(doubleName + " cannot be negative");
+            String errorMessage = doubleName + " cannot be negative";
+            validatorLogger.warning(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
         return doubleNumber;
     }

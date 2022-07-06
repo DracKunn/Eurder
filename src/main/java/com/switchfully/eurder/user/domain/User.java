@@ -10,7 +10,11 @@ import java.util.Objects;
 
 import static com.switchfully.eurder.util.validation.ValidatorsUtility.*;
 
-@MappedSuperclass
+//https://stackoverflow.com/questions/64417858/spring-jpa-join-abstract-class-in-abstract-class
+//https://www.baeldung.com/hibernate-inheritance
+@Entity(name = "user")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="user_type", discriminatorType = DiscriminatorType.INTEGER)
 @Table
 @NoArgsConstructor
 @Getter
