@@ -24,7 +24,7 @@ public class Order {
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_id_seq", allocationSize = 1)
     private int id;
     @JoinColumn(name = "fk_customer_id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User customer;
 
     @OneToMany(cascade = CascadeType.MERGE)

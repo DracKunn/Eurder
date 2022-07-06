@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import static com.switchfully.eurder.util.validation.ValidatorsUtility.isNotNull;
@@ -70,4 +71,15 @@ public class UserService {
     }
 
 
+    public UserDTO getCustomerDTOByEmail(String userEmail) {
+        return getCustomerDTO(getCustomerByEmail(userEmail));
+    }
+
+    private User getCustomerByEmail(String userEmail) {
+        User foundCustomer = this.userRepository.findAll().stream().filter(user -> Objects.equals(user.getEmail(), userEmail)).findFirst().orElse(null);
+        if (foundCustomer == null) {
+            throw new IllegalArgumentException("Customer not found");
+        }
+        return foundCustomer;
+    }
 }

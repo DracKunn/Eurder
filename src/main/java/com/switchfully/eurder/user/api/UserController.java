@@ -34,10 +34,15 @@ public class UserController {
         return this.userService.viewAllCustomers();
     }
 
-    @GetMapping(path = "/{userId}", produces = "application/json")
+    @GetMapping(path = "/find/{userId}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO viewCustomer(@PathVariable int userId){
+    public UserDTO viewCustomerById(@PathVariable int userId){
         return this.userService.getCustomerDTOById(userId);
     }
 
+    @GetMapping(path = "/find/{userEmail}", produces = "application/json")
+    @ResponseStatus(HttpStatus.OK)
+    public UserDTO viewCustomerByEmail(@PathVariable String userEmail){
+        return this.userService.getCustomerDTOByEmail(userEmail);
+    }
 }

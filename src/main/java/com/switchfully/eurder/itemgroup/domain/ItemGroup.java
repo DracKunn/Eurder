@@ -22,7 +22,7 @@ public class ItemGroup {
     @SequenceGenerator(name = "itemgroup_sequence", sequenceName = "itemgroup_id_seq", allocationSize = 1)
     private int id;
     @JoinColumn(name = "fk_item_id")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Item selectedItem;
     @Column(name = "price_order")
     private double priceAtTimeOfOrder;
