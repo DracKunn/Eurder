@@ -24,11 +24,11 @@ public class Order {
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_id_seq", allocationSize = 1)
     private int id;
     @JoinColumn(name = "fk_customer_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User customer;
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "fk_order")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_order_id")
     private List<ItemGroup> orderedItems;
 
     public Order(User customer, List<ItemGroup> orderedItems) throws IllegalArgumentException {
