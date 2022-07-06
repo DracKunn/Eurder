@@ -4,7 +4,7 @@ import com.switchfully.eurder.item.api.dto.CreateItemDTO;
 import com.switchfully.eurder.item.api.dto.ItemDTO;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
-import com.switchfully.eurder.order.domain.itemgroup.ItemGroup;
+import com.switchfully.eurder.itemgroup.domain.ItemGroup;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;

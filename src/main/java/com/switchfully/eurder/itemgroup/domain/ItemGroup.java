@@ -1,4 +1,4 @@
-package com.switchfully.eurder.order.domain.itemgroup;
+package com.switchfully.eurder.itemgroup.domain;
 
 import com.switchfully.eurder.item.domain.Item;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+
 @Getter
 @Entity
+@Table(name = "itemgroup", schema = "eurder")
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemGroup {
@@ -19,16 +21,16 @@ public class ItemGroup {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "itemgroup_sequence")
     @SequenceGenerator(name = "itemgroup_sequence", sequenceName = "itemgroup_id_seq", allocationSize = 1)
     private int id;
-    @JoinColumn
+    @JoinColumn(name = "fk_item_id")
     @ManyToOne
     private Item selectedItem;
-    @Column
+    @Column(name = "price_order")
     private double priceAtTimeOfOrder;
-    @Column
+    @Column(name = "stock_order")
     private int stockAtTimeOfOrder;
-    @Column
+    @Column(name = "order_amount")
     private int amount;
-    @Column
+    @Column(name = "shipping_date")
     private LocalDate shippingDate;
 
     public ItemGroup(Item selectedItem, int amount) {

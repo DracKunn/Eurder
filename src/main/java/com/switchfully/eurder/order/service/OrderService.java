@@ -1,25 +1,28 @@
-package com.switchfully.eurder.order.service.order;
+package com.switchfully.eurder.order.service;
 
 import com.switchfully.eurder.item.api.dto.ItemDTO;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.service.ItemMapper;
 import com.switchfully.eurder.item.service.ItemService;
-import com.switchfully.eurder.order.api.dto.order.CreateOrderDTO;
-import com.switchfully.eurder.order.api.dto.order.OrderDTO;
-import com.switchfully.eurder.order.domain.itemgroup.ItemGroup;
-import com.switchfully.eurder.order.domain.order.Order;
-import com.switchfully.eurder.order.domain.order.OrderRepository;
-import com.switchfully.eurder.order.service.itemgroup.ItemGroupMapper;
-import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.domain.Customer;
-import com.switchfully.eurder.user.service.CustomerMapper;
-import com.switchfully.eurder.user.service.CustomerService;
+import com.switchfully.eurder.itemgroup.api.dto.ItemGroupDTO;
+import com.switchfully.eurder.order.api.dto.CreateOrderDTO;
+import com.switchfully.eurder.order.api.dto.OrderDTO;
+import com.switchfully.eurder.itemgroup.domain.ItemGroup;
+import com.switchfully.eurder.order.domain.Order;
+import com.switchfully.eurder.order.domain.OrderRepository;
+import com.switchfully.eurder.itemgroup.service.ItemGroupMapper;
+import com.switchfully.eurder.user.api.dto.UserDTO;
+import com.switchfully.eurder.user.domain.User;
+import com.switchfully.eurder.user.service.UserMapper;
+import com.switchfully.eurder.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -31,29 +34,30 @@ public class OrderService {
     private final Logger orderServiceLogger = Logger.getLogger(this.getClass().getName());
 
     ItemMapper itemMapper;
-    CustomerMapper customerMapper;
+    UserMapper userMapper;
     ItemGroupMapper itemGroupMapper;
     OrderMapper orderMapper;
     ItemService itemService;
-    CustomerService customerService;
+    UserService userService;
     OrderRepository orderRepository;
 
 
     public OrderDTO addItemsToNewOrder(CreateOrderDTO createOrderDTO) {
-        CustomerDTO customerDTO = customerService.getCustomerDTOById(createOrderDTO.customerId());
+        UserDTO userDTO = userService.getCustomerDTOById(createOrderDTO.customerId());
         ItemDTO itemToOrderDTO = itemService.getItemDTOById(createOrderDTO.itemId());
         Item itemToOrder = itemMapper.toEntity(itemToOrderDTO);
         ItemGroup itemGroup = new ItemGroup(itemToOrder, createOrderDTO.amount());
-        Order order = orderMapper.toEntity(customerDTO, List.of(itemGroupMapper.toDTO(itemGroup)));
+        ItemGroupDTO itemGroupDTO = itemGroupMapper.toDTO(itemGroup);
+        Order order = orderMapper.toEntity(userDTO, new ArrayList<>(Collections.singleton(itemGroupDTO)));
         orderRepository.save(order);
-        String itemsAddedMessage = "A new order with ID: " + order.getId() + " has been created for customer: " + customerMapper.toEntity(customerDTO).getFullName() + ". " + createOrderDTO.amount() + " " + itemToOrderDTO.name() + " have been added.";
+        String itemsAddedMessage = "A new order with ID: " + order.getId() + " has been created for customer: " + userMapper.toEntity(userDTO).getName().toString() + ". " + createOrderDTO.amount() + " " + itemToOrderDTO.name() + " have been added.";
         orderServiceLogger.info(itemsAddedMessage);
         return orderMapper.toDTO(order);
     }
 
     public OrderDTO addItemsToExistingOrder(int orderId, CreateOrderDTO createOrderDTO) throws AccessDeniedException {
-        CustomerDTO customerDTO = customerService.getCustomerDTOById(createOrderDTO.customerId());
-        Customer customer = customerMapper.toEntity(customerDTO);
+        UserDTO userDTO = userService.getCustomerDTOById(createOrderDTO.customerId());
+        User customer = userMapper.toEntity(userDTO);
         ItemDTO itemToOrderDTO = itemService.getItemDTOById(createOrderDTO.itemId());
         Item itemToOrder = itemMapper.toEntity(itemToOrderDTO);
         Order order = findOrderById(orderId);
@@ -107,7 +111,7 @@ public class OrderService {
 //    }
 
     public List<OrderDTO> getAllOrdersForUser(int customerId) {
-        Customer customer = getCustomerById(customerId);
+        User customer = getCustomerById(customerId);
         List<Order> customerOrders = orderRepository.findAll().stream().filter(order -> order.getCustomer() == customer).toList();
         orderServiceLogger.info("all orders for customer: " + customerOrders);
         return orderMapper.listOfOrdertoOrderDTOList(customerOrders);
@@ -122,7 +126,7 @@ public class OrderService {
     @NotNull
     private Order validateOrder(int customerId, int orderId) {
         Order order = findOrderById(orderId);
-        Customer customer = getCustomerById(customerId);
+        User customer = getCustomerById(customerId);
         try {
             validateCustomerHasThisOrder(customer, order);
         } catch (AccessDeniedException exception) {
@@ -131,12 +135,12 @@ public class OrderService {
         return order;
     }
 
-    private Customer getCustomerById(int userId) {
-        customerMapper.toEntity(getCustomerDTOById(userId));
+    private User getCustomerById(int userId) {
+        return userMapper.toEntity(getCustomerDTOById(userId));
     }
 
-    private CustomerDTO getCustomerDTOById(int userId){
-        return customerService.getCustomerDTOById(userId);
+    private UserDTO getCustomerDTOById(int userId) {
+        return userService.getCustomerDTOById(userId);
     }
 
     private Order findOrderById(int orderId) {

@@ -1,9 +1,9 @@
 package com.switchfully.eurder.util.validation;
 
-import com.switchfully.eurder.order.domain.order.Order;
+import com.switchfully.eurder.order.domain.Order;
+import com.switchfully.eurder.user.domain.User;
 import com.switchfully.eurder.util.address.domain.Address;
 import com.switchfully.eurder.util.name.domain.Name;
-import com.switchfully.eurder.user.domain.Customer;
 
 import java.nio.file.AccessDeniedException;
 import java.util.logging.Logger;
@@ -101,7 +101,7 @@ public class ValidatorsUtility {
         return address;
     }
 
-    public static void validateCustomerHasThisOrder(Customer customer, Order order) throws AccessDeniedException {
+    public static void validateCustomerHasThisOrder(User customer, Order order) throws AccessDeniedException {
         if (!order.getCustomer().equals(customer)) {
             String errorMessage = "this user cannot view this order";
             validatorLogger.warning(errorMessage);

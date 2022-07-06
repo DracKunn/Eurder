@@ -1,8 +1,8 @@
-package com.switchfully.eurder.order.domain.order;
+package com.switchfully.eurder.order.domain;
 
 import com.switchfully.eurder.item.domain.Item;
-import com.switchfully.eurder.order.domain.itemgroup.ItemGroup;
-import com.switchfully.eurder.user.domain.Customer;
+import com.switchfully.eurder.itemgroup.domain.ItemGroup;
+import com.switchfully.eurder.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +15,7 @@ import static com.switchfully.eurder.util.validation.ValidatorsUtility.isNotNull
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
+@Table(name = "order", schema = "eurder")
 @Getter
 public class Order {
     // we need to change the order ID to an int ID.
@@ -23,15 +23,15 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_id_seq", allocationSize = 1)
     private int id;
-    @JoinColumn
+    @JoinColumn(name = "fk_customer_id")
     @ManyToOne
-    private Customer customer;
+    private User customer;
 
-    @OneToMany
-    @JoinColumn
+    @OneToMany(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "fk_order")
     private List<ItemGroup> orderedItems;
 
-    public Order(Customer customer, List<ItemGroup> orderedItems) throws IllegalArgumentException {
+    public Order(User customer, List<ItemGroup> orderedItems) throws IllegalArgumentException {
         isNotNull(customer, "customer");
         this.customer = customer;
         this.orderedItems = orderedItems;

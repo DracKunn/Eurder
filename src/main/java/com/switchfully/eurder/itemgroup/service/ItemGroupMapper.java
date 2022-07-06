@@ -1,9 +1,9 @@
-package com.switchfully.eurder.order.service.itemgroup;
+package com.switchfully.eurder.itemgroup.service;
 
 import com.switchfully.eurder.item.service.ItemMapper;
-import com.switchfully.eurder.order.api.dto.itemgroup.CreateItemGroupDTO;
-import com.switchfully.eurder.order.api.dto.itemgroup.ItemGroupDTO;
-import com.switchfully.eurder.order.domain.itemgroup.ItemGroup;
+import com.switchfully.eurder.itemgroup.api.dto.CreateItemGroupDTO;
+import com.switchfully.eurder.itemgroup.api.dto.ItemGroupDTO;
+import com.switchfully.eurder.itemgroup.domain.ItemGroup;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

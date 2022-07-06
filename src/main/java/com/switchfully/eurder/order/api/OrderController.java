@@ -1,17 +1,14 @@
 package com.switchfully.eurder.order.api;
 
-import com.switchfully.eurder.item.api.dto.ItemDTO;
-import com.switchfully.eurder.order.api.dto.order.CreateOrderDTO;
-import com.switchfully.eurder.order.api.dto.order.OrderDTO;
-import com.switchfully.eurder.order.domain.order.Order;
-import com.switchfully.eurder.order.service.order.OrderService;
+import com.switchfully.eurder.order.api.dto.CreateOrderDTO;
+import com.switchfully.eurder.order.api.dto.OrderDTO;
+import com.switchfully.eurder.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("{userId}/orders")

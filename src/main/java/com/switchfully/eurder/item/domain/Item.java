@@ -25,13 +25,13 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_sequence")
     @SequenceGenerator(name = "item_sequence", sequenceName = "item_id_seq", allocationSize = 1)
     private int id;
-    @Column
+    @Column(name = "name")
     private String name;
-    @Column
+    @Column(name = "description")
     private String description;
-    @Column
+    @Column(name = "price")
     private double price;
-    @Column
+    @Column(name = "stock")
     private int stock;
 
     public Item(String name, String description) {
@@ -50,21 +50,18 @@ public class Item {
         this.stock = stock;
     }
 
-    public Item setPrice(double price) {
+    public void setPrice(double price) {
         this.price = isNotNegative(price, "Price");
-        return this;
     }
 
-    public Item setStock(int amount) {
+    public void setStock(int amount) {
         this.stock = isNotNegative(amount, "Stock");
-        return this;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        Item item = (Item) o;
+        if (!(o instanceof Item item)) return false;
         return getId() == item.getId() && Double.compare(item.getPrice(), getPrice()) == 0 && getStock() == item.getStock() && Objects.equals(getName(), item.getName()) && Objects.equals(getDescription(), item.getDescription());
     }
 

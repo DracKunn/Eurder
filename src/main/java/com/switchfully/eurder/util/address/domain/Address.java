@@ -12,19 +12,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table
-public final class Address {
+@Table(name = "address")
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_sequence")
     @SequenceGenerator(name = "address_sequence", sequenceName = "address_id_seq", allocationSize = 1)
     private int id;
-    @Column
+    @Column(name = "street_name")
     private String streetName;
-    @Column
+    @Column(name = "street_number")
     private int streetNumber;
-    @Column
+    @Column(name = "postal_code")
     private String postalCode;
-    @Column
+    @Column(name = "city")
     private String city;
 
     public Address(String streetName, int streetNumber, String postalCode, String city) {
@@ -39,21 +39,15 @@ public final class Address {
         return streetName + " " + streetNumber + ", " + postalCode + " " + city;
     }
 
-
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Address) obj;
-        return Objects.equals(this.streetName, that.streetName) &&
-                this.streetNumber == that.streetNumber &&
-                Objects.equals(this.postalCode, that.postalCode) &&
-                Objects.equals(this.city, that.city);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Address address)) return false;
+        return getId() == address.getId() && getStreetNumber() == address.getStreetNumber() && Objects.equals(getStreetName(), address.getStreetName()) && Objects.equals(getPostalCode(), address.getPostalCode()) && Objects.equals(getCity(), address.getCity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(streetName, streetNumber, postalCode, city);
+        return Objects.hash(getId(), getStreetName(), getStreetNumber(), getPostalCode(), getCity());
     }
-
 }

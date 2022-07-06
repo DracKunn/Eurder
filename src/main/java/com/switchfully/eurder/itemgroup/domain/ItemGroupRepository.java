@@ -1,4 +1,4 @@
-package com.switchfully.eurder.order.domain.itemgroup;
+package com.switchfully.eurder.itemgroup.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

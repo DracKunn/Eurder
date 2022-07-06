@@ -1,11 +1,11 @@
-package com.switchfully.eurder.order.service.order;
+package com.switchfully.eurder.order.service;
 
-import com.switchfully.eurder.order.api.dto.itemgroup.ItemGroupDTO;
-import com.switchfully.eurder.order.api.dto.order.OrderDTO;
-import com.switchfully.eurder.order.domain.order.Order;
-import com.switchfully.eurder.order.service.itemgroup.ItemGroupMapper;
-import com.switchfully.eurder.user.api.dto.customer.CustomerDTO;
-import com.switchfully.eurder.user.service.CustomerMapper;
+import com.switchfully.eurder.itemgroup.api.dto.ItemGroupDTO;
+import com.switchfully.eurder.order.api.dto.OrderDTO;
+import com.switchfully.eurder.order.domain.Order;
+import com.switchfully.eurder.itemgroup.service.ItemGroupMapper;
+import com.switchfully.eurder.user.api.dto.UserDTO;
+import com.switchfully.eurder.user.service.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,20 +14,21 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 public class OrderMapper {
-    CustomerMapper customerMapper;
+    UserMapper userMapper;
     ItemGroupMapper itemGroupMapper;
 
-    public Order toEntity(CustomerDTO customerDTO, List<ItemGroupDTO> itemGroupDTOs){
+    public Order toEntity(UserDTO userDTO, List<ItemGroupDTO> itemGroupDTOs){
         return new Order(
-                customerMapper.toEntity(customerDTO),
+                userMapper.toEntity(userDTO),
                 itemGroupMapper.toEntity(itemGroupDTOs)
         );
     }
 
+
     public Order toEntity(OrderDTO orderDTO) {
         return new Order(
                 orderDTO.id(),
-                customerMapper.toEntity(orderDTO.customerDTO()),
+                userMapper.toEntity(orderDTO.userDTO()),
                 itemGroupMapper.toEntity(orderDTO.orderedItems())
         );
     }
@@ -35,7 +36,7 @@ public class OrderMapper {
     public OrderDTO toDTO(Order order) {
         return new OrderDTO(
                 order.getId(),
-                customerMapper.toDTO(order.getCustomer()),
+                userMapper.toDTO(order.getCustomer()),
                 itemGroupMapper.toDTO(order.getOrderedItems())
         );
     }

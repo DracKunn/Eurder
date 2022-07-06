@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @ControllerAdvice
-public class CustomerServiceExceptionHandler {
+public class UserrServiceExceptionHandler {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @ExceptionHandler(IllegalArgumentException.class)
