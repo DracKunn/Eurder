@@ -14,7 +14,6 @@ import static com.switchfully.eurder.util.validation.ValidatorsUtility.*;
 @Entity
 @Table(name = "user", schema = "eurder")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class User {
     @Id
@@ -35,6 +34,16 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role userRole;
+
+    public User(int id, String userName, Name name, String email, Address address, String phoneNumber, Role userRole) {
+        this.id = id;
+        this.userName = validateURLFriendly(userName);
+        this.name = validateName(name);
+        this.email = validateEmail(email);
+        this.address = validateAddress(address);
+        this.phoneNumber = validatePhoneNumber(phoneNumber);
+        this.userRole = userRole;
+    }
 
     public User(String userName, Name name, String email, Address address, String phoneNumber, Role role) throws IllegalArgumentException {
         this.userName = validateURLFriendly(userName);
