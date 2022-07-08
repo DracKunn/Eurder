@@ -1,4 +1,6 @@
 ![Order Logo](order.png)
+Database URL:
+`postgresql://database-2.cuvv0osxzgmi.eu-west-3.rds.amazonaws.com:5432/postgres`
 
 Örder is an innovative (not really) order management application. The front-end 
 will be a beautiful designed javascript-based application that will communicate with an even more 
