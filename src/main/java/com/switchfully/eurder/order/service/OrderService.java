@@ -68,6 +68,7 @@ public class OrderService {
 //            return orderRepository.getOrderwithID(orderId);
 //        }
         order.addItemToOrder(itemToOrder, createOrderDTO.amount());
+        orderRepository.save(order);
         String itemsAddedMessage = createOrderDTO.amount() + " " + itemToOrderDTO.name() + " have been added to your order with ID: " + orderId + ".";
         orderServiceLogger.info(itemsAddedMessage);
         return orderMapper.toDTO(order);
