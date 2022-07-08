@@ -23,7 +23,8 @@ public class ItemService {
     public ItemDTO addItem(CreateItemDTO createItemDTO) {
         Item item = itemMapper.toEntity(createItemDTO);
         itemRepository.save(item);
-        itemLogger.info("The item " + item + " has been added.");
+        String msg = "The item " + item + " has been added.";
+        itemLogger.info(msg);
         return itemMapper.toDTO(item);
     }
 
@@ -31,7 +32,8 @@ public class ItemService {
         Item item = itemGroup.getSelectedItem();
         int amount = itemGroup.getAmount();
         removeAmountFormStock(item, amount);
-        itemLogger.info(amount + " " + item.getName() + " have been removed from the stock. Current stock: " + item.getStock());
+        String msg = amount + " " + item.getName() + " have been removed from the stock. Current stock: " + item.getStock();
+        itemLogger.info(msg);
 
     }
 
@@ -50,21 +52,45 @@ public class ItemService {
     @NotNull
     private Item getItemById(int itemId) {
         Item foundItem = itemRepository.findById(itemId).orElse(null);
-        if(foundItem ==null){
+        if (foundItem == null) {
             throw new IllegalArgumentException("Item not found.");
         }
         return foundItem;
     }
 
 
-    public ItemDTO getItemDTOById(int itemId){
+    public ItemDTO getItemDTOById(int itemId) {
         return itemMapper.toDTO(getItemById(itemId));
     }
 
-    public void setStockForItem(Item item, int stock){
-        String settingStockMessage ="Setting stock for "+item+ " to amount: " + stock;
-    itemLogger.info(settingStockMessage);
-    item.setStock(stock);
-    itemRepository.save(item);
+
+    public ItemDTO addStock(int itemId, int stockToAdd) {
+        Item item = findItemById(itemId);
+        int stock = item.getStock() + stockToAdd;
+        item.setStock(stock);
+        itemRepository.save(item);
+        String settingStockMessage = "Updated stock for " + item.getName() + " to: " + stock;
+        itemLogger.info(settingStockMessage);
+        return itemMapper.toDTO(item);
+
+
+    }
+
+    private Item findItemById(int itemId) {
+        Item foundItem = itemRepository.findById(itemId).orElse(null);
+        if (foundItem == null) {
+            throw new IllegalArgumentException("Item not found");
+        }
+        return foundItem;
+    }
+
+    public ItemDTO updatePrice(int itemId, double newPrice) {
+        Item item = findItemById(itemId);
+        item.setPrice(newPrice);
+        itemRepository.save(item);
+        String priceMessage = "Updated price for " + item.getName() + " to: " + newPrice;
+        itemLogger.info(priceMessage);
+        return itemMapper.toDTO(item);
+
     }
 }
