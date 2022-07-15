@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,11 +31,11 @@ public class ItemService {
         itemLogger.info(msg);
         return itemMapper.toDTO(item);
     }
-
+    @Transactional
     public void removeItemAmountFromStock(ItemGroup itemGroup) {
         Item item = itemGroup.getSelectedItem();
         int amount = itemGroup.getAmount();
-        removeAmountFormStock(item, amount);
+        removeAmountFromStock(item, amount);
         String msg = amount + " " + item.getName() + " have been removed from the stock. Current stock: " + item.getStock();
         itemLogger.info(msg);
         removeAmountFromStock(item, amount);
@@ -46,7 +44,7 @@ public class ItemService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    void removeAmountFromStock(Item item, int amount) {
+    public void removeAmountFromStock(Item item, int amount) {
         int itemId = item.getId();
         Item foundItem = getItemById(itemId);
         int stock = foundItem.getStock();
@@ -59,7 +57,8 @@ public class ItemService {
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    @NotNull Item getItemById(int itemId) {
+    @NotNull
+    public Item getItemById(int itemId) {
         Item foundItem = itemRepository.findById(itemId).orElse(null);
         if (foundItem == null) {
             throw new IllegalArgumentException("Item not found.");
@@ -67,7 +66,6 @@ public class ItemService {
         return foundItem;
     }
 
-    public ItemDTO getItemDTOById(int itemId) {
 
     public ItemDTO getItemDTOById(int itemId) {
         return itemMapper.toDTO(getItemById(itemId));
@@ -79,6 +77,7 @@ public class ItemService {
         itemLogger.info(settingStockMessage);
         item.setStock(stock);
         itemRepository.save(item);
+    }
 
     public ItemDTO addStock(int itemId, int stockToAdd) {
         Item item = findItemById(itemId);
@@ -112,9 +111,7 @@ public class ItemService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public List<ItemOverviewDTO> getAllItems(String stockUrgency) {
-        List<ItemOverviewDTO> allItems = itemRepository.findAll().stream()
-                .map(item -> itemMapper.toItemOverviewDTO(item))
-                .collect(Collectors.toList());
+        List<ItemOverviewDTO> allItems = itemRepository.findAll().stream().map(item -> itemMapper.toItemOverviewDTO(item)).toList();
         return filterOnStockUrgency(stockUrgency, allItems);
     }
 
@@ -122,9 +119,7 @@ public class ItemService {
     private List<ItemOverviewDTO> filterOnStockUrgency(String stockUrgency, List<ItemOverviewDTO> allItems) {
         if (stockUrgency != null) {
             Item.StockUrgency stockUrgencyToFilterOn = Item.StockUrgency.valueOf(stockUrgency);
-            return allItems.stream()
-                    .filter(item -> Item.StockUrgency.valueOf(item.stockUrgency()).equals(stockUrgencyToFilterOn))
-                    .collect(Collectors.toList());
+            return allItems.stream().filter(item -> Item.StockUrgency.valueOf(item.stockUrgency()).equals(stockUrgencyToFilterOn)).toList();
         } else {
             return allItems;
         }
