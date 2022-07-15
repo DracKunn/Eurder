@@ -58,6 +58,12 @@ public class Item {
         this.stock = isNotNegative(amount, "Stock");
     }
 
+    public StockUrgency getStockUrgency() {
+        if(stock < 5) { return StockUrgency.STOCK_LOW; }
+        if (stock < 10) { return StockUrgency.STOCK_MEDIUM; }
+        return StockUrgency.STOCK_HIGH;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,5 +74,12 @@ public class Item {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getDescription(), getPrice(), getStock());
+    }
+
+    public enum StockUrgency {
+        STOCK_LOW,
+        STOCK_MEDIUM,
+        STOCK_HIGH;
+
     }
 }
