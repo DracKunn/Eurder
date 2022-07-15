@@ -41,7 +41,6 @@ public class OrderService {
     UserService userService;
     OrderRepository orderRepository;
 
-
     public OrderDTO addItemsToNewOrder(CreateOrderDTO createOrderDTO) {
         UserDTO userDTO = userService.getCustomerDTOById(createOrderDTO.customerId());
         ItemDTO itemToOrderDTO = itemService.getItemDTOById(createOrderDTO.itemId());
@@ -62,12 +61,9 @@ public class OrderService {
         Item itemToOrder = itemMapper.toEntity(itemToOrderDTO);
         Order order = findOrderById(orderId);
         validateCustomerHasThisOrder(customer, order);
-//        if (itemIsAlreadyInOrder(order, item)) {
-//            int newTotal = addAmountToOrderWithSameItem(order, newItemName, amount);
-////            logger.info(amount + " " + itemDTO.name() + " have been added to your order with ID: " + orderId + ". The new total is: " + newTotal);
-//            return orderRepository.getOrderwithID(orderId);
-//        }
+
         order.addItemToOrder(itemToOrder, createOrderDTO.amount());
+        orderRepository.save(order);
         String itemsAddedMessage = createOrderDTO.amount() + " " + itemToOrderDTO.name() + " have been added to your order with ID: " + orderId + ".";
         orderServiceLogger.info(itemsAddedMessage);
         return orderMapper.toDTO(order);
@@ -95,20 +91,9 @@ public class OrderService {
         }
     }
 
-//    private boolean itemIsAlreadyInOrder(Order order, Item itemToAdd) {
-//        return order.getOrderedItems().contains(itemToAdd);
-//    }
-
-
     private void removeAmountFromStock(Order order) {
         order.getOrderedItems().forEach(itemGroup -> itemService.removeItemAmountFromStock(itemGroup));
     }
-
-//    private int addAmountToOrderWithSameItem(Order order, Item item, int addedAmount) {
-//        ItemGroup orderedItem = order.getOrderedItems().stream().filter(itemGroup -> itemGroup.getSelectedItem()==item).;
-//        orderedItem.updateAmount(addedAmount);
-//        return orderedItem.getAmount();
-//    }
 
     public List<OrderDTO> getAllOrdersForUser(int customerId) {
         User customer = getCustomerById(customerId);
@@ -116,7 +101,6 @@ public class OrderService {
         orderServiceLogger.info("all orders for customer: " + customerOrders);
         return orderMapper.listOfOrdertoOrderDTOList(customerOrders);
     }
-
 
     public OrderDTO getOrderDTOByOrderId(int customerId, int orderId) {
         Order order = validateOrder(customerId, orderId);
@@ -150,6 +134,4 @@ public class OrderService {
         }
         return foundOrder;
     }
-
-
 }
